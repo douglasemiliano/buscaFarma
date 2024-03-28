@@ -1,0 +1,60 @@
+{
+  "name": "angular-openlayers",
+  "version": "1.0.0",
+  "description": "Example of using Angular and OpenLayers",
+  "private": true,
+  "scripts": {
+    "ng": "ng",
+    "start": "ng serve",
+    "build": "ng build",
+    "watch": "ng build --watch --configuration development",
+    "test": "ng test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pzaenger/angular-openlayers.git"
+  },
+  "author": "Philipp Zängerling <dev@pzaenger.com> (https://www.pzaenger.com/)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/pzaenger/angular-openlayers/issues"
+  },
+  "keywords": [
+    "angular",
+    "angular-material",
+    "docker",
+    "openlayers",
+    "pm2"
+  ],
+  "homepage": "https://github.com/pzaenger/angular-openlayers#readme",
+  "dependencies": {
+    "@angular/animations": "^16.2.12",
+    "@angular/cdk": "^16.2.12",
+    "@angular/common": "^16.2.12",
+    "@angular/compiler": "^16.2.12",
+    "@angular/core": "^16.2.12",
+    "@angular/forms": "^16.2.12",
+    "@angular/material": "^16.2.14",
+    "@angular/platform-browser": "^16.2.12",
+    "@angular/platform-browser-dynamic": "^16.2.12",
+    "@angular/router": "^16.2.12",
+    "ol": "^7.0.0",
+    "rxjs": "~7.5.0",
+    "tslib": "^2.3.0",
+    "zone.js": "~0.13.3"
+  },
+  "devDependencies": {
+    "@angular-devkit/build-angular": "^16.2.13",
+    "@angular/cli": "~16.2.13",
+    "@angular/compiler-cli": "^16.2.12",
+    "@types/geojson": "^7946.0.10",
+    "@types/jasmine": "~4.0.0",
+    "jasmine-core": "~4.2.0",
+    "karma": "~6.4.0",
+    "karma-chrome-launcher": "~3.1.0",
+    "karma-coverage": "~2.2.0",
+    "karma-jasmine": "~5.1.0",
+    "karma-jasmine-html-reporter": "~2.0.0",
+    "typescript": "~4.9.5"
+  }
+}
