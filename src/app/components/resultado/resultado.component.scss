@@ -1,0 +1,22 @@
+.container-fluid {
+    display: flex;
+    flex-direction: column;
+    height: 100vh; /* Ocupa toda a altura da tela */
+  }
+  
+  .mapa-container {
+    width: 100%;
+    height: 100vh;
+  }
+  
+  .mapa {
+    width: 100%;
+    height: 50vh;
+  }
+  
+  .farmacias-container {
+    overflow-y: auto; /* Habilita a rolagem vertical apenas para a lista de farmácias */
+    max-height: 70vh; /* Altura máxima para a lista de farmácias */
+    z-index: 2; /* Garante que a lista de farmácias fique sobreposta ao mapa */
+  }
+  

@@ -1,0 +1,24 @@
+<button class="btn btn-danger" (click)="voltar()">voltar</button>
+<app-mapa></app-mapa>
+<div class="container mt-2">
+    <div class="row">
+        <div class="col-12 col-md-4" *ngFor="let farmacia of farmacias">
+            <div class="card m-2" >
+                <div class="card-body">
+                    <div class="nomeFarmacia text-center" style="font-size: 14pt;">
+                        <strong>
+                            {{farmacia.nomeFantasia}}
+                        </strong>
+                    </div>
+                    <div class="endereco" style="font-size: 10pt;">
+                        {{farmacia.endereco.rua}}, nº {{farmacia.endereco.numero}}
+                        <br>
+                        {{farmacia.endereco.bairro}}, {{farmacia.endereco.municipio}} - {{farmacia.endereco.estado}}
+                    </div>
+                </div>
+            </div>
+    
+        </div>
+    </div>
+</div>
+

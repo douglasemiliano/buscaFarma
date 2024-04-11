@@ -1,3 +1,4 @@
+import { Component } from '@angular/core';
 import Map from 'ol/Map';
 import View from 'ol/View';
 import TileLayer from 'ol/layer/Tile';
@@ -14,16 +15,19 @@ import { defaults as defaultInteractions, PinchZoom } from 'ol/interaction';
 import { Injectable } from '@angular/core';
 import { Feature } from 'ol';
 import { Point } from 'ol/geom';
-import { Vector } from '../models/vector';
 import Style from 'ol/style/Style';
 import Icon from 'ol/style/Icon';
-import { ModalService } from './modal.service';
-import { Farmacia } from '../models/farmacia';
+import { Farmacia } from 'src/app/models/farmacia';
+import { ModalService } from 'src/app/services/modal.service';
+import { Vector } from 'src/app/models/vector';
 
-@Injectable()
-export class GeoService {
-
-farmacias = []
+@Component({
+  selector: 'app-mapa',
+  templateUrl: './mapa.component.html',
+  styleUrls: ['./mapa.component.scss']
+})
+export class MapaComponent {
+  farmacias = []
 
   tileSources = [
     { name: 'None', source: null },
@@ -34,7 +38,7 @@ farmacias = []
   selectedTileSource = this.tileSources[1];
   vectorSources: Vector[] = [];
 
-  private readonly map: Map;
+  public map: Map;
   private readonly tileLayer: TileLayer<OsmSource>;
   private readonly vectorLayer: VectorLayer<any>;
   private readonly extent = [813079.7791264898, 5929220.284081122, 848966.9639063801, 5936863.986909639];
@@ -99,13 +103,7 @@ farmacias = []
         });
         
         this.map.on('click', (e)=>{
-          console.log(e);
-  
           let features: any[] = this.map.getFeaturesAtPixel(e.pixel);
-  
-          console.log(features);
-  
-          // alert(features[0].values_.name)
   
           if (features.length > 0){
             let dadosFarmacia: any = {
@@ -121,15 +119,13 @@ farmacias = []
       }
     }
 
-    
-
   /**
    * Updates zoom and center of the view.
    * @param zoom Zoom.
    * @param center Center in long/lat.
    */
   updateView(localizacao: any[]): void {    
-    this.map.getView().setZoom(10);
+    this.map.getView().setZoom(8);
     this.map.getView().setCenter(fromLonLat(localizacao));
   }
 
