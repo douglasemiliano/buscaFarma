@@ -1,11 +1,13 @@
-<div class="content d-flex justify-content-center align-items-center" style="background-color: red; width: 100vw; height: 100vh; color: white;">
+<div class="content d-flex justify-content-center align-items-center" style="width: 100vw; height: 100vh; color: white;">
     <div class="container text-center">
-        <h1 class="display-4">Busca Farma</h1>
+        <img src="https://i.imgur.com/EUkZVYc.png" alt="" style="width: 40%;">
         <p class="lead">Encontre a farmácia mais próxima de você</p>
         <form>
             <div class="input-group mb-3">
                 <input type="text" class="form-control upper" placeholder="Buscar" [formControl]="pesquisa" aria-label="Buscar" aria-describedby="button-addon2">
-                <button class="btn btn-secondary" type="button" id="button-addon2" (click)="onSubmit()" >Button</button>
+                <button class="btn btn-secondary" type="button" id="button-addon2" (click)="onSubmit()" >
+                    <i class="fas fa-search"></i>
+                </button>
               </div>
         </form>
     

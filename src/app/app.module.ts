@@ -18,6 +18,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { FarmaciaService } from './services/farmacia.service';
 import { MapaComponent } from './components/mapa/mapa.component';
+import {MatToolbarModule} from '@angular/material/toolbar';
 
 @NgModule({
   declarations: [
@@ -38,7 +39,9 @@ import { MapaComponent } from './components/mapa/mapa.component';
     AppRoutingModule,
     FormsModule,
     ReactiveFormsModule,
-    HttpClientModule
+    HttpClientModule,
+    MatIconModule,
+    MatToolbarModule
   ],
   providers: [
     AppService,

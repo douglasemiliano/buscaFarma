@@ -6,7 +6,7 @@ export interface Farmacia {
 }
 
 export interface Endereco {
-    rua: "AVENIDA GERALDO BARBOSA",
+    rua: string,
     numero: string,
     bairro: string,
     municipio: string,
