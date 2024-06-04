@@ -1,15 +1,116 @@
-<div class="content d-flex justify-content-center align-items-center" style="width: 100vw; height: 100vh; color: white;">
+<nav *ngIf="step === 2">
+    <button class="btn btn-lg mt-4" style="position: fixed;" (click)="voltarStep()" title="voltar">
+        <i class="fa-solid fa-chevron-left" style="color: white;"></i>
+    </button>
+</nav>
+<div class="content d-flex justify-content-center align-items-center"
+    style="width: 100vw; height: 100vh; color: white;">
     <div class="container text-center">
-        <img src="https://i.imgur.com/EUkZVYc.png" alt="" style="width: 40%;">
-        <p class="lead">Encontre a farmácia mais próxima de você</p>
+        <img src="https://i.imgur.com/EUkZVYc.png" alt="" style="width: 80%;">
+        <p class="lead" style="font-size: 12pt;">Encontre a farmácia mais próxima de você</p>
+
+        <div class="container mt-3" *ngIf="step === 1">
+            <h1>
+                Como você quer realizar a busca?
+            </h1>
+            <div class="row">
+                <div class="col-12">
+                    <button class="btn btn-success btn-lg w-100 my-2"
+                        (click)="selecionarTipoBusca('estado')">Estado</button>
+                </div>
+                <div class="col-12">
+                    <button class="btn btn-danger btn-lg w-100 my-2"
+                        (click)="selecionarTipoBusca('municipio')">Municipio</button>
+                </div>
+                <div class="col-12">
+                    <button class="btn btn-warning btn-lg w-100 my-2" (click)="selecionarTipoBusca('farmacia')">Nome da
+                        Farmácia</button>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="container" *ngIf="step === 2">
+            <div class="row" *ngIf="tipoBusca === 'estado'">
+                <h3>Busca de Farmácias por Estado</h3>
+                <form>
+                    <div class="input-group mb-3">
+                        <div class="col-12">
+                            <select class="form-select" [formControl]="estado" aria-label="Default select example">
+                                <option selected>Selecione o Estado</option>
+                                <option *ngFor="let estado of estados" [value]="estado.uf">
+                                    {{ estado.estado }} ({{ estado.uf }})
+                                </option>
+                            </select>
+
+                            <button class="btn btn-danger w-100 my-2" type="submit" id="button-addon2"
+                                (click)="onSubmit()" [disabled]="estado.value.toLowerCase() === 'selecione o estado'">
+                                <i class="fas fa-search"></i> Buscar
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <div class="row" *ngIf="tipoBusca === 'municipio'">
+                <h3>Busca de Farmácias por Municipio</h3>
+                <form>
+                    <div class="input-group mb-3">
+                        <div class="col-12">
+                            <select class="form-select" [formControl]="estado" aria-label="Default select example">
+                                <option selected>Selecione o Estado</option>
+                                <option *ngFor="let estado of estados" [value]="estado.uf">
+                                    {{ estado.estado }} ({{ estado.uf }})
+                                </option>
+                            </select>
+                        </div>
+                        <div class="col-12 mt-2" *ngIf="estado.value.toLowerCase() !== 'selecione o estado'">
+                            <input type="text" class="form-control upper" placeholder="João Pessoa"
+                                [formControl]="pesquisa" aria-label="Buscar" aria-describedby="button-addon2">
+                            <button class="btn btn-danger w-100 my-2" type="submit" id="button-addon2"
+                                (click)="onSubmit()" [disabled]="pesquisa.invalid">
+                                <i class="fas fa-search"></i> Buscar
+                            </button>
+                        </div>
+                    </div>
+                </form>
+
+            </div>
+
+            <div class="row" *ngIf="tipoBusca === 'farmacia'">
+                <h3>Busca pelo nome da Farmácia</h3>
+                <form>
+                    <div class="input-group mb-3">
+                        <div class="col-12 mt-2">
+                            <input type="text" class="form-control upper" placeholder="Buscar" [formControl]="pesquisa"
+                                aria-label="Buscar" aria-describedby="button-addon2">
+                            <button class="btn btn-danger w-100 my-2" type="submit" id="button-addon2"
+                                (click)="onSubmit()" [disabled]="pesquisa.invalid">
+                                <i class="fas fa-search"></i> Buscar
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <!-- <div class="container">
+                <button class="btn btn-warning" (click)="voltarStep()">voltar</button>
+            </div> -->
+        </div>
+
+
+        <!-- <div class="col">
+            <button class="btn btn-secondary">Municipio</button>
+        </div>
         <form>
             <div class="input-group mb-3">
                 <input type="text" class="form-control upper" placeholder="Buscar" [formControl]="pesquisa" aria-label="Buscar" aria-describedby="button-addon2">
-                <button class="btn btn-secondary" type="button" id="button-addon2" (click)="onSubmit()" >
+                <button class="btn btn-secondary" type="submit" id="button-addon2" (click)="onSubmit()" >
                     <i class="fas fa-search"></i>
                 </button>
               </div>
         </form>
-    
+     -->
     </div>
+
 </div>

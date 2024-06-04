@@ -1,11 +1,13 @@
 <!-- Image and text -->
-<nav class="navbar navbar-light" style="background-color: red;">
-    <a class="navbar-brand" (click)="goToHome()">
-      <img src="https://i.imgur.com/EUkZVYc.png"  
-      style="width: 30%;"
-      class="d-inline-block align-top" alt="">
-    </a>
-  </nav>
+<nav *ngIf="!rotaAtual.includes('/home')" class="navbar navbar-light" style="background-color: red;">
+  <div class="navbar-brand">
+    <button class="btn btn-lg mt-2" (click)="voltar()" title="voltar">
+         <i class="fa-solid fa-chevron-left" style="color: white;"></i>
+     </button> 
+     
+     <img src="https://i.imgur.com/EUkZVYc.png" alt="" style="width: 30%; cursor: pointer" (click)="goToHome()">
+  </div>
+</nav>
   
   
 <router-outlet></router-outlet>

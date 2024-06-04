@@ -19,6 +19,20 @@ import { HttpClientModule } from '@angular/common/http';
 import { FarmaciaService } from './services/farmacia.service';
 import { MapaComponent } from './components/mapa/mapa.component';
 import {MatToolbarModule} from '@angular/material/toolbar';
+import { DetalhesComponent } from './components/detalhes/detalhes.component';
+import {MatTabsModule} from '@angular/material/tabs';
+import { MapaDetalheComponent } from './components/mapa-detalhe/mapa-detalhe.component';
+import { AvaliacaoComponent } from './components/avaliacao/avaliacao.component';
+import { MatStepperModule } from '@angular/material/stepper';
+import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatSliderModule } from '@angular/material/slider';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import {MatChipsModule} from '@angular/material/chips';
 
 @NgModule({
   declarations: [
@@ -26,7 +40,10 @@ import {MatToolbarModule} from '@angular/material/toolbar';
     TesteComponent,
     HomeComponent,
     ResultadoComponent,
-    MapaComponent
+    MapaComponent,
+    DetalhesComponent,
+    MapaDetalheComponent,
+    AvaliacaoComponent
   ],
   imports: [
     BrowserModule,
@@ -41,7 +58,19 @@ import {MatToolbarModule} from '@angular/material/toolbar';
     ReactiveFormsModule,
     HttpClientModule,
     MatIconModule,
-    MatToolbarModule
+    MatToolbarModule,
+    MatTabsModule,
+    MatStepperModule,
+    MatInputModule,
+    MatSelectModule,
+    MatFormFieldModule,
+    MatCheckboxModule,
+    MatSliderModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatAutocompleteModule,
+    MatChipsModule
+    
   ],
   providers: [
     AppService,

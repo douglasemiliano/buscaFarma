@@ -1,0 +1,172 @@
+<mat-horizontal-stepper linear #stepper>
+<!-- Step 1: Nota -->
+<!-- Step 1: Nota -->
+<!-- Step 1: Nota -->
+<mat-step >
+    <ng-template matStepLabel>1</ng-template>
+
+    <div class="container mt-5 rating">
+        <div class="avaliacao">
+            <h3 style="text-align: center;">
+              Como foi sua experiência na Farmácia Estelar?
+            </h3>
+
+            <div class="stars-container">
+                <div class="estrelas">
+                    <div *ngFor="let star of [1, 2, 3, 4, 5]"
+                    (click)="onRatingChanged(star)"
+                    [class.active]="star <= rating"
+                    [class.inactive]="star > rating"
+                    class="star"
+                    ></div>
+                </div>
+                <p class="legenda">
+                  Avalie de 0 a 5 estrelas e ajude-nos a melhorar!
+                </p>
+            </div>
+        </div>
+        <div>
+            <button class="btn btn-danger" matStepperNext>Proximo</button>
+        </div>
+    </div>
+  </mat-step>
+  
+  
+  
+  
+  
+    <!-- Step 2: Estrutura da Farmácia -->
+    <mat-step >
+        <ng-template matStepLabel>2</ng-template>
+
+        <div class="container mt-5 rating">
+            <h3 style="text-align: center;">
+                Qual sua opinião em relação à farmácia?
+            </h3>
+            <form [formGroup]="secondFormGroup">
+              <ng-template matStepLabel>Avaliação da Estrutura</ng-template>
+      
+              <mat-form-field style="width: 100%;">
+                <mat-label>A fila é muito grande?</mat-label>
+                <mat-select formControlName="queue">
+                  <mat-option value="Pouca fila">Pouca fila</mat-option>
+                  <mat-option value="Muita fila">Muita fila</mat-option>
+                </mat-select>
+              </mat-form-field>
+              <mat-form-field style="width: 100%;">
+                <mat-label>Qual horário você visitou a farmácia?</mat-label>
+                <mat-select formControlName="horario">
+                  <mat-option value="manha">Manhã</mat-option>
+                  <mat-option value="tarde">Tarde </mat-option>
+                  <mat-option value="noite">Noite </mat-option>
+                </mat-select>
+              </mat-form-field>
+              <mat-form-field style="width: 100%;">
+                  <mat-label>Como foi o atendimento?</mat-label>
+                <mat-select formControlName="service">
+                  <mat-option value="Otimo">Ótimo</mat-option>
+                  <mat-option value="Bom">Bom</mat-option>
+                  <mat-option value="Regular">Regular</mat-option>
+                  <mat-option value="Ruim">Ruim</mat-option>
+                  <mat-option value="Pessimo">Péssimo</mat-option>
+                </mat-select>
+              </mat-form-field>
+      
+              <mat-form-field style="width: 100%;">
+                  <mat-label>O que você foi buscar?</mat-label>
+                  <mat-select formControlName="productType">
+                  <mat-option value="Absorvente">Absorvente</mat-option>
+                  <mat-option value="Remédio">Remedio</mat-option>
+                </mat-select>
+              </mat-form-field>
+      
+              <mat-form-field style="width: 100%;">
+                  <mat-label>Tinha o produto que você foi buscar?</mat-label>
+                  <mat-select formControlName="productAvailability">
+                  <mat-option value="Sim">Sim</mat-option>
+                  <mat-option value="Não">Não</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </form>
+            <div class="alinhar-botoes">
+              <button class="btn btn-warning" matStepperPrevious>Anterior</button>
+              <button class= "btn btn-danger" matStepperNext>Próximo</button>
+            </div>
+        </div>
+    </mat-step>
+  
+    <!-- Step 3: Lista de Remédios -->
+    <mat-step >
+      <form [formGroup]="thirdFormGroup">
+        <ng-template matStepLabel>3</ng-template>
+        <mat-form-field appearance="fill" style="width: 100%;">
+          <mat-label>Selecione um medicamento</mat-label>
+          <input type="text" matInput [formControl]="medicationControl"  [matAutocomplete]="auto">
+          <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
+            <mat-option *ngFor="let medication of filteredMedications | async" [value]="medication.name" >
+              {{medication.name}}
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
+
+        
+        <mat-chip-listbox aria-label="Medication selection">
+          <mat-chip-option selected *ngFor="let item of selectedMedications" color="warn">
+            <button matChipRemove (click)="remove(item)">
+              <mat-icon>cancel</mat-icon>
+            </button>
+            {{item}}
+          </mat-chip-option>
+        </mat-chip-listbox>
+        <div>
+          <button mat-button matStepperPrevious>Back</button>
+          <button mat-button matStepperNext>Next</button>
+        </div>
+      </form>
+    </mat-step>
+  
+    <!-- Step 4: Comentários -->
+    <mat-step >
+      <form [formGroup]="fourthFormGroup">
+        <ng-template matStepLabel>Comentário</ng-template>
+        <mat-form-field>
+          <mat-label>Comentário</mat-label>
+          <textarea matInput formControlName="comments"></textarea>
+        </mat-form-field>
+        <div>
+          <button mat-button matStepperPrevious>Back</button>
+          <button mat-button matStepperNext>Next</button>
+        </div>
+      </form>
+    </mat-step>
+
+
+    <mat-step >
+        <h3>Para finalizar a avaliação, por favor, forneça seus dados para que possamos registrar sua opinião de forma mais completa.</h3>
+             <p>Importante ressaltar que seus dados pessoais, como nome, data de nascimento e CPF, não serão armazenados</p>
+        <form [formGroup]="informacoesForm">
+          <ng-template matStepLabel>Informações do Usuário</ng-template>
+          <mat-form-field>
+            <mat-label>Nome</mat-label>
+            <input matInput formControlName="name" placeholder="Digite o nome">
+          </mat-form-field>
+          <mat-form-field>
+            <mat-label>CPF</mat-label>
+            <input matInput formControlName="cpf" placeholder="Digite o CPF">
+          </mat-form-field>
+          <mat-form-field>
+            <mat-label>Data de Nascimento</mat-label>
+            <input matInput [matDatepicker]="picker" formControlName="birthDate" placeholder="Escolha a data de nascimento">
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+          </mat-form-field>
+          <div>
+            <button mat-button matStepperPrevious>Back</button>
+            <button mat-button (click)="submitReview()">Submit</button>
+
+          </div>
+        </form>
+      </mat-step>
+
+  </mat-horizontal-stepper>
+  

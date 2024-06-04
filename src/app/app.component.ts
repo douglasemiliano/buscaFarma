@@ -1,9 +1,10 @@
 import { AfterViewInit, Component } from '@angular/core';
 import { GeoService } from './services/geo.service';
 import { MatBottomSheet } from '@angular/material/bottom-sheet';
-import { Subscription } from 'rxjs';
+import { Subscription, filter } from 'rxjs';
 import { AppService } from './services/app.service';
-import { Router } from '@angular/router';
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-root',
@@ -12,10 +13,29 @@ import { Router } from '@angular/router';
 })
 export class AppComponent {
 
-  constructor(private router: Router){ 
+  rotaAtual: string = ""
+
+  constructor(private router: Router,   private location: Location){
+    this.router.events.pipe(
+      filter(event => event instanceof NavigationEnd)
+    ).subscribe((event: any) => {
+      this.rotaAtual = event.urlAfterRedirects;
+    });
+    
+     
   }
 
   public goToHome(){
     this.router.navigate(["home"]);
+  }
+
+  public exibirNavbar(): boolean {
+    console.log(this.rotaAtual);
+    
+    return this.rotaAtual.includes("/home");
+  }
+
+  public voltar(){
+    this.router.navigateByUrl("/resultado")
   }
 }

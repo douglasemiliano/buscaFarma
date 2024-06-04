@@ -4,12 +4,16 @@
 </div>
 
 <div class="lista-farmacias">
+    <div class="row mx-2 contador" *ngIf="farmacias">
+        {{farmacias.length}} farmácias encontradas
+    </div>
     <div class="row">
         <div class="col-12 col-md-3 col-sm-6" *ngFor="let farmacia of farmacias">
             <div class="card m-2">
                 <div class="card-body">
-                    <div class="nomeFarmacia text-center" style="font-size: 14pt; margin-bottom: 2rem;">
-                        <strong>{{ farmacia.nomeFantasia }}</strong>
+                    <div class="nomeFarmacia text-center" style="font-size: 14pt; margin-bottom: 2rem;" (click)="goToDetails(farmacia)">
+                        <strong *ngIf="farmacia.nomeFantasia;">{{ farmacia.nomeFantasia }}</strong>
+                        <strong *ngIf="!farmacia.nomeFantasia"> {{farmacia.nome}}</strong>
                     </div>
                     <div class="localizacao d-flex align-items-center justify-content-between">
                         <div class="icone">

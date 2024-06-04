@@ -20,6 +20,9 @@ import Icon from 'ol/style/Icon';
 import { Farmacia } from 'src/app/models/farmacia';
 import { ModalService } from 'src/app/services/modal.service';
 import { Vector } from 'src/app/models/vector';
+import LineString from 'ol/geom/LineString';
+import Stroke from 'ol/style/Stroke';
+
 
 @Component({
   selector: 'app-mapa',
@@ -93,6 +96,7 @@ export class MapaComponent {
             name: marker.nomeFantasia,
             coordenadas: marker.longLat,
             endereco: marker.endereco,
+            type: Point,
             geometry: new Point(fromLonLat(marker.longLat))
           });
   
@@ -101,6 +105,29 @@ export class MapaComponent {
   
           this.vectorLayer.getSource().addFeature(pinFeature);
         });
+
+            // Adicione a linha entre a localização atual e a latitude/longitude definida
+    const line = new LineString([
+      fromLonLat([-34.866873107323, -7.119970520549]), // Localização atual
+      fromLonLat([-34.865892424651, -7.119965784773]) // Latitude/Longitude definida
+    ]);
+
+    
+    const lineFeature = new Feature({
+      geometry: line
+    });
+    
+    // Estilo personalizado para a linha
+    const lineStyle = new Style({
+      stroke: new Stroke({
+        color: 'blue',
+        width: 4 // Espessura da linha em pixels
+      })
+    });
+
+    lineFeature.setStyle(lineStyle);
+
+    this.vectorLayer.getSource().addFeature(lineFeature);
         
         this.map.on('click', (e)=>{
           let features: any[] = this.map.getFeaturesAtPixel(e.pixel);
@@ -124,7 +151,7 @@ export class MapaComponent {
    * @param zoom Zoom.
    * @param center Center in long/lat.
    */
-  updateView(localizacao: any[]): void {    
+  updateView(localizacao: any[]): void {        
     this.map.getView().setZoom(8);
     this.map.getView().setCenter(fromLonLat(localizacao));
   }

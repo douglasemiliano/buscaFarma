@@ -7,3 +7,10 @@ import { environment } from './environments/environment';
 if (environment.production) enableProdMode();
 
 platformBrowserDynamic().bootstrapModule(AppModule).catch(err => console.error(err));
+
+if (window.location.pathname !== '/home') {
+    window.location.href = '/home';
+  } else {
+    platformBrowserDynamic().bootstrapModule(AppModule)
+      .catch(err => console.error(err));
+  }

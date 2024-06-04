@@ -2,7 +2,8 @@ export interface Farmacia {
   nome: string;
   longLat: number[],
   nomeFantasia: string,
-  endereco: Endereco
+  endereco: Endereco,
+  produtos: any []
 }
 
 export interface Endereco {
