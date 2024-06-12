@@ -7,11 +7,12 @@ import { AvaliacaoComponent } from './components/avaliacao/avaliacao.component';
 
 
 const routes: Routes = [
-  { path: "home", component: AvaliacaoComponent },
+  { path: "avaliacao", component: AvaliacaoComponent },
   { path: "resultado", component: ResultadoComponent},
-  { path: "", redirectTo: "/avaliacao", pathMatch: "full" },
+  { path: "", redirectTo: "/home", pathMatch: "full" },
   { path: "detalhes", component: DetalhesComponent},
-  { path: "avaliacao", component: AvaliacaoComponent}
+  { path: "avaliacao", component: AvaliacaoComponent},
+  { path: "home", component: HomeComponent}
 
 ];
 

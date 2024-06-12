@@ -6,6 +6,7 @@ import { FarmaciaService } from 'src/app/services/farmacia.service';
 import { MapaComponent } from '../mapa/mapa.component';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { MapaDetalheComponent } from '../mapa-detalhe/mapa-detalhe.component';
+import { Avaliacao } from 'src/app/models/avaliacao';
 
 @Component({
   selector: 'app-detalhes',
@@ -45,6 +46,10 @@ export class DetalhesComponent implements OnInit, OnDestroy, AfterViewInit{
 
   comentarios: string[] = []; // Lista de comentários
   comentario: FormControl =  new FormControl("", [Validators.required])
+
+  produtos: string[] = [];
+  avaliacoes: Avaliacao[] = [];
+  rating: number = 0;
   
   @ViewChild(MapaDetalheComponent) mapaComponent: MapaDetalheComponent;
 
@@ -83,10 +88,12 @@ export class DetalhesComponent implements OnInit, OnDestroy, AfterViewInit{
     
     this.subscription = this.farmaciaService.farmaciaAtual.subscribe( {
       next: (farmacia: any) => {
-        console.log(farmacia);
-        
         if(farmacia) {
+          console.log(farmacia);        
           this.farmacia = farmacia;
+          this.avaliacoes = farmacia.avaliacoes ? farmacia.avaliacoes : [];
+          this.separarProdutosFarmacia();
+          this.calcularMediaDeRating();
         }
       }, error : (error: any) => {
         console.log(error);
@@ -114,5 +121,25 @@ export class DetalhesComponent implements OnInit, OnDestroy, AfterViewInit{
       this.posicaoUsuario.longLat = data;
       this.posicao = data;
     })
+   }
+
+   goToAvaliacao(){
+    this.router.navigateByUrl("/avaliacao")
+   }
+
+   separarProdutosFarmacia() {
+    for(let avaliacao of this.avaliacoes){
+      this.produtos = this.produtos.concat(avaliacao.produtos);
+      this.comentarios.push(avaliacao.comentario)
+    }
+   }
+
+   calcularMediaDeRating() {
+    let listaRating: number[] = [];
+    for(let avaliacao of this.avaliacoes){
+      listaRating.push(avaliacao.rating);
+    }
+    let soma: number = listaRating.reduce((acumulador: number, elemento: number) => acumulador + elemento, 0);
+    this.rating = soma / listaRating.length;
    }
 }

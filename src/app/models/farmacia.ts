@@ -1,9 +1,12 @@
+import { Avaliacao } from "./avaliacao";
+
 export interface Farmacia {
   nome: string;
-  longLat: number[],
-  nomeFantasia: string,
-  endereco: Endereco,
-  produtos: any []
+  longLat: number[];
+  nomeFantasia: string;
+  endereco: Endereco;
+  produtos: string [];
+  avaliacoes: Avaliacao[];
 }
 
 export interface Endereco {

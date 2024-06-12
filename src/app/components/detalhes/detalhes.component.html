@@ -1,80 +1,94 @@
 <div class="mapa-container">
-    <app-mapa-detalhe></app-mapa-detalhe>
+  <app-mapa-detalhe></app-mapa-detalhe>
 </div>
 <ng-container *ngIf="farmacia">
-    <div class="container-fluid">
-        <div class="row">
-          <div class="col-12 col-md-3">
-            <!-- Mapa com a localização da farmácia -->
-          </div>
-          <div class="col-12 col-md-9">
-            <!-- Navs para Detalhes, Produtos e Avaliações -->
-            <mat-tab-group>
-                <mat-tab label="Detalhes"> 
-                    <div class="container">
-                        <div class="header">
-                          <h1>{{ farmacia.nomeFantasia }}</h1>
-                          <p class="nome">{{ farmacia.nome }}</p>
-                        </div>
-                        <div class="info">
-                          <div class="info-item">
-                            <label>Latitude:</label>
-                            <p>{{ farmacia.longLat[0] }}</p>
-                          </div>
-                          <div class="info-item">
-                            <label>Longitude:</label>
-                            <p>{{ farmacia.longLat[1] }}</p>
-                          </div>
-                        </div>
-                        <div class="endereco">
-                          <h2>Endereço</h2>
-                          <div class="info-item">
-                            <label>Rua:</label>
-                            <p>{{ farmacia.endereco.rua }}, {{ farmacia.endereco.numero }}</p>
-                          </div>
-                          <div class="info-item">
-                            <label>Bairro:</label>
-                            <p>{{ farmacia.endereco.bairro }}</p>
-                          </div>
-                          <div class="info-item">
-                            <label>Município:</label>
-                            <p>{{ farmacia.endereco.municipio }}</p>
-                          </div>
-                          <div class="info-item">
-                            <label>Estado:</label>
-                            <p>{{ farmacia.endereco.estado }}</p>
-                          </div>
-                        </div>
-                      </div>
-                       
-                </mat-tab>
-                <mat-tab label="Produtos"> 
-                <!-- Lista de produtos -->
-                    <ul>
-                        <li *ngFor="let produto of farmacia.produtos">{{ produto }}</li>
-                    </ul>
-                    <!-- Empty state -->
-                    <p *ngIf="!farmacia.produtos">Nenhum produto disponível.</p>    
-                </mat-tab>
-                <mat-tab label="Avaliações"> 
-                    <!-- Rating em formato de estrelas -->
-          <p>Avaliação: ★★★☆☆ (Boa)</p>
-          <!-- Input para comentário e botão de enviar -->
-          <div class="form-group">
-            <input type="text" class="form-control" [formControl]="comentario" placeholder="Digite seu comentário">
-          </div>
-          <button type="button" class="btn btn-primary" (click)="enviarComentario()">Enviar</button>
-          <!-- Lista de comentários -->
-          <ul>
-            <li *ngFor="let comentario of comentarios">{{ comentario }}</li>
-          </ul>
-          <!-- Empty state -->
-          <p *ngIf="!comentarios.length">Nenhum comentário ainda.</p>
-                </mat-tab>
-              </mat-tab-group>
-              
-        </div>
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-12 col-md-3">
+        <!-- Mapa com a localização da farmácia -->
+      </div>
+      <div class="col-12 col-md-9">
+        <!-- Navs para Detalhes, Produtos e Avaliações -->
+        <mat-tab-group>
+          <mat-tab label="Detalhes">
+            <div class="container">
+              <div class="header">
+                <h1>{{ farmacia.nomeFantasia }}</h1>
+                <!-- <p class="nome">{{ farmacia.nome }}</p> -->
+              </div>
+              <!-- <div class="info">
+                <div class="info-item">
+                  <label>Latitude:</label>
+                  <p>{{ farmacia.longLat[0] }}</p>
+                </div>
+                <div class="info-item">
+                  <label>Longitude:</label>
+                  <p>{{ farmacia.longLat[1] }}</p>
+                </div>
+              </div> -->
+              <div class="endereco">
+                <h3>Endereço</h3>
+                <div class="info-item">
+                  <label>Rua:</label>
+                  <p>{{ farmacia.endereco.rua }}, {{ farmacia.endereco.numero }}</p>
+                </div>
+                <div class="info-item">
+                  <label>Bairro:</label>
+                  <p>{{ farmacia.endereco.bairro }}</p>
+                </div>
+                <div class="info-item">
+                  <label>Município:</label>
+                  <p>{{ farmacia.endereco.municipio }}</p>
+                </div>
+                <div class="info-item">
+                  <label>Estado:</label>
+                  <p>{{ farmacia.endereco.estado }}</p>
+                </div>
+              </div>
+            </div>
+
+          </mat-tab>
+          <mat-tab label="Produtos">
+            <!-- Lista de produtos -->
+            <div *ngIf="this.produtos.length > 0" style="overflow-y: visible; height: 20rem;">
+              <p style="text-align: center;">
+                <strong>Produtos Disponíveis</strong> 
+              </p>
+              <div class="card p-3 my-2" *ngFor="let produto of this.produtos">{{ produto }}</div>
+            </div>
+            <!-- Empty state -->
+            <p *ngIf="this.comentarios.length === 0">Nenhum produto disponível.</p>
+          </mat-tab>
+          <mat-tab label="Avaliações">
+            <!-- Rating em formato de estrelas -->
+            <div class="conteudo d-flex flex-column">
+              <div class="avaliacoes">
+                <span class="w-100" *ngIf="this.rating">
+                  <star-rating [starType]="'svg'" [readOnly]="true" [rating]="this.rating"></star-rating>
+                  <p style="text-align: center;"> Média: <strong>{{this.rating.toFixed(1)}}</strong> </p>
+                </span>
+    
+                <div *ngIf="this.comentarios.length > 0">
+    
+                  <blockquote style="margin-bottom: 1rem; font-size: 12pt; font-style: italic; d-flex" *ngFor="let comentario of this.comentarios">
+                    <i class="fa-solid fa-quote-left mr-2"></i>
+                    <span>
+                      {{comentario}}
+                    </span>
+                  </blockquote>
+                </div>
+    
+                <!-- Empty state -->
+                <p *ngIf="this.comentarios.length === 0">Nenhum comentário ainda.</p>
+              </div>
+              <button class="btn btn-warning" (click)="goToAvaliacao()">Avaliar</button>
+            </div>
+
+          </mat-tab>
+        </mat-tab-group>
+
       </div>
     </div>
-      
+  </div>
+
 </ng-container>

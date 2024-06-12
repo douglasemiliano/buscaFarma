@@ -33,6 +33,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import {MatChipsModule} from '@angular/material/chips';
+import { StarRatingModule } from 'angular-star-rating';
 
 @NgModule({
   declarations: [
@@ -69,9 +70,9 @@ import {MatChipsModule} from '@angular/material/chips';
     MatDatepickerModule,
     MatNativeDateModule,
     MatAutocompleteModule,
-    MatChipsModule
-    
-  ],
+    MatChipsModule,
+    StarRatingModule.forRoot() 
+   ],
   providers: [
     AppService,
     GeoService,

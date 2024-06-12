@@ -1,7 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
+import { Router } from '@angular/router';
 import { Observable, map, startWith } from 'rxjs';
+import { Avaliacao, EstruturaFarmacia, InformacoesBasicas } from 'src/app/models/avaliacao';
+import { FarmaciaService } from 'src/app/services/farmacia.service';
 
 @Component({
   selector: 'app-avaliacao',
@@ -18,6 +21,11 @@ export class AvaliacaoComponent implements OnInit {
   rating: number = 0;
   medicationControl = new FormControl();
   filteredMedications: Observable<any[]>;
+
+  farmacia: any;
+  avaliacoes: Avaliacao [] = [];
+
+  patternCpf = Validators.pattern(/^\d{3}\.\d{3}\.\d{3}\-\d{2}$/);
 
   medications: any[] = [
     { name: 'Atenolol 25mg', indication: 'Hipertensão' },
@@ -52,9 +60,17 @@ export class AvaliacaoComponent implements OnInit {
   
   selectedMedications: any[] = [];
 
-  constructor(private _formBuilder: FormBuilder) {}
+  constructor(private _formBuilder: FormBuilder, private service: FarmaciaService, private router: Router) {}
 
   ngOnInit() {
+
+    this.service.farmaciaAtual.subscribe((farmacia: any) => {
+      console.log(farmacia);
+      this.farmacia = farmacia;
+      this.avaliacoes = farmacia?.avaliacoes ? farmacia.avaliacoes : []
+      console.log(this.avaliacoes);
+      
+    })
 
     this.filteredMedications = this.medicationControl.valueChanges
     .pipe(
@@ -64,8 +80,9 @@ export class AvaliacaoComponent implements OnInit {
 
     this.informacoesForm = this._formBuilder.group({
       name: ["", Validators.required],
-      cpf: ["", [Validators.required, Validators.pattern(/^\d{3}\.\d{3}\.\d{3}\-\d{2}$/)]],
+      cpf: ["", Validators.required],
       birthDate: ["", Validators.required],
+      gender: ["", Validators.required]
       // Campo do formulário para o rating
     });
 
@@ -73,18 +90,18 @@ export class AvaliacaoComponent implements OnInit {
       rating: ['', Validators.required]
     });
     this.secondFormGroup = this._formBuilder.group({
-      queue: ['', Validators.required],
-      service: ['', Validators.required],
-      productAvailability: ['', Validators.required],
-      productType: ['', Validators.required],
+      fila: ['', Validators.required],
+      qualidadeAtendimento: ['', Validators.required],
+      isProdutoDisponivel: ['', Validators.required],
+      tipoProduto: ['', Validators.required],
       horario: ['', Validators.required],
 
     });
     this.thirdFormGroup = this._formBuilder.group({
-      medicines: [[], Validators.required]
+      produtos: [[], Validators.required]
     });
     this.fourthFormGroup = this._formBuilder.group({
-      comments: ['']
+      comentario: ['']
     });
   }
 
@@ -95,14 +112,43 @@ export class AvaliacaoComponent implements OnInit {
   }
 
   submitReview() {
-    const reviewData = {
-      rating: this.rating,
-      structure: this.secondFormGroup.value,
-      medicines: this.thirdFormGroup.value.medicines,
-      comments: this.fourthFormGroup.value.comments,
-      informacoes: this.informacoesForm.value
-    };
-    console.log('Review Data:', reviewData);
+
+    let comentario: string = this.fourthFormGroup.value.comentario;
+    let informacoes: InformacoesBasicas =  this.informacoesForm.value;
+    let produtos: string[] = this.thirdFormGroup.value.produtos;
+    let rating: number = this.rating;
+    let estruturaFarmacia: EstruturaFarmacia = this.secondFormGroup.value;
+
+    const avaliacao = new Avaliacao(comentario, informacoes, produtos, rating, estruturaFarmacia);
+    console.log(avaliacao);
+
+    this.avaliacoes.push(avaliacao);
+    
+    // const avaliacao: Avaliacao = {
+    //   comentario: this.fourthFormGroup.value.comentario,
+    //   informacoes: this.informacoesForm.value,
+    //   produtos: this.thirdFormGroup.value.produtos,
+    //   rating: this.rating,
+    //   estruturaFarmacia: this.secondFormGroup.value
+    // };
+
+    // const reviewData = {
+    //   "avaliacao": {
+    //     rating: this.rating,
+    //     structure: this.secondFormGroup.value,
+    //     medicines: this.thirdFormGroup.value.medicines,
+    //     comments: this.fourthFormGroup.value.comments,
+    //     informacoes: this.informacoesForm.value
+    //   }
+    // };
+    
+    this.service.avaliar({"avaliacoes": this.avaliacoes}, this.farmacia.id).subscribe(data => {
+      this.router.navigateByUrl("/home");
+      alert("avaliação realizada com sucesso, em instantes ela será publicada!")
+    }, error => {
+      console.log(error);
+      
+    })
     // Lógica para enviar a avaliação ao servidor ou processá-la conforme necessário.
   }
 
@@ -120,6 +166,7 @@ export class AvaliacaoComponent implements OnInit {
   selected(event: MatAutocompleteSelectedEvent): void {
     if (!this.selectedMedications.includes(event.option.viewValue)) {
       this.selectedMedications.push(event.option.viewValue);
+      this.thirdFormGroup.get("produtos")?.setValue(this.selectedMedications);
     }
     this.medicationControl.setValue("")
 

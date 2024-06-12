@@ -8,7 +8,7 @@ import { Farmacia } from '../models/farmacia';
 })
 export class FarmaciaService {
 
-  private url: string = "http://localhost:3000/farmacias?";
+  private url: string = "http://localhost:3000/farmacias";
 
   farmacias: BehaviorSubject<any> = new BehaviorSubject<any>(null);
 
@@ -20,19 +20,19 @@ export class FarmaciaService {
   constructor(private http: HttpClient) { }
 
   buscarFarmaciaPorUF(UF: string) {
-    this.http.get(this.url + "endereco.estado=" + UF).subscribe(data => {
+    this.http.get(this.url + "?endereco.estado=" + UF).subscribe(data => {
       this.farmacias.next(data);
     })
   }
 
   buscarFarmaciaPorMunicipio(UF: string, municipio: string) {
-    this.http.get(this.url + "endereco.estado=" + UF + "&endereco.municipio=" + municipio).subscribe(data => {
+    this.http.get(this.url + "?endereco.estado=" + UF + "&endereco.municipio=" + municipio).subscribe(data => {
       this.farmacias.next(data);
     })
   }
 
   buscarFarmaciaPorNome(nome: string) {
-    this.http.get(this.url + "nomeFantasia=" + nome).subscribe(data => {
+    this.http.get(this.url + "?nomeFantasia=" + nome).subscribe(data => {
       this.farmacias.next(data);
     })
   }
@@ -46,4 +46,7 @@ export class FarmaciaService {
     this.localizacaoUsuario.next(localizacao);
   }
 
+  avaliar(avaliacao: any, id: number) {
+    return this.http.patch(this.url + "/" + id, avaliacao);
+  }
 }
