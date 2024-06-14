@@ -29,13 +29,15 @@ export class AppComponent {
     this.router.navigate(["home"]);
   }
 
-  public exibirNavbar(): boolean {
-    console.log(this.rotaAtual);
-    
+  public exibirNavbar(): boolean { 
     return this.rotaAtual.includes("/home");
   }
 
   public voltar(){
-    this.router.navigateByUrl("/resultado")
+    if(this.rotaAtual.includes("/resultado")) {
+      this.router.navigateByUrl("/home");
+    } else {
+      this.router.navigateByUrl("/resultado");
+    }
   }
 }

@@ -1,11 +1,11 @@
 <!-- Image and text -->
-<nav *ngIf="!rotaAtual.includes('/home')" class="navbar navbar-light" style="background-color: red; position: fixed; z-index: 5;">
+<nav *ngIf="!rotaAtual.includes('/home')" class="navbar navbar-light" style="background-color: red; position: fixed; z-index: 5; width: 100%;">
   <div class="navbar-brand">
     <button class="btn btn-lg mt-2" (click)="voltar()" title="voltar">
          <i class="fa-solid fa-chevron-left" style="color: white;"></i>
      </button> 
      
-     <img src="https://i.imgur.com/EUkZVYc.png" alt="" style="width: 30%; cursor: pointer" (click)="goToHome()">
+     <img src="https://i.imgur.com/EUkZVYc.png" alt="" style="height: 5rem; cursor: pointer" (click)="goToHome()">
   </div>
 </nav>
   

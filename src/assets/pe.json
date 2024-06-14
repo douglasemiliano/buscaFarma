@@ -98,6 +98,28 @@
             "horario": "tarde"
           },
           "dataAvaliacao": "2024-06-05T02:14:29.986Z"
+        },
+        {
+          "comentario": "rerer",
+          "informacoes": {
+            "name": "",
+            "cpf": "",
+            "birthDate": "2024-06-20T03:00:00.000Z",
+            "gender": "male"
+          },
+          "produtos": [
+            "Espironolactona 25mg",
+            "Atenolol 25mg"
+          ],
+          "rating": 5,
+          "estruturaFarmacia": {
+            "fila": "",
+            "qualidadeAtendimento": "Regular",
+            "isProdutoDisponivel": "Não",
+            "tipoProduto": "Remédio",
+            "horario": ""
+          },
+          "dataAvaliacao": "2024-06-13T23:52:50.109Z"
         }
       ]
     },
@@ -194,7 +216,33 @@
         "municipio": "JABOATAO DOS GUARARAPES",
         "estado": "PE"
       },
-      "id": "12345678000345"
+      "id": "12345678000345",
+      "avaliacoes": [
+        {
+          "comentario": "Muito boa, tem ar condicionado e cadeira para sentar!",
+          "informacoes": {
+            "name": "",
+            "cpf": "",
+            "birthDate": "1995-11-08T03:00:00.000Z",
+            "gender": "male"
+          },
+          "produtos": [
+            "Atenolol 25mg",
+            "Captopril 25mg",
+            "Espironolactona 25mg",
+            "Cloridrato de Propranolol 40mg"
+          ],
+          "rating": 5,
+          "estruturaFarmacia": {
+            "fila": "Muita fila",
+            "qualidadeAtendimento": "Otimo",
+            "isProdutoDisponivel": "Sim",
+            "tipoProduto": "Remédio",
+            "horario": "tarde"
+          },
+          "dataAvaliacao": "2024-06-13T22:31:05.422Z"
+        }
+      ]
     },
     {
       "nome": "EMPREENDIMENTOS PAGUE MENOS S/A",

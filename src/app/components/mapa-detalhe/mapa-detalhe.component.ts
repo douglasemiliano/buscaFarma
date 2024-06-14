@@ -81,52 +81,37 @@ export class MapaDetalheComponent {
       })
     });
     
-
-    const markers = [
-      { name: 'Farmácia Lira', lonLat: [ -35.0154, -8.11208] },
-      { name: 'Farmácia Conceição', lonLat: [ -34.919312026758696, -8.15452616440768] },
-      { name: 'Farmácia Prazeres', lonLat: [-34.920683346420596, -8.157437536208423 ] },
-      { name: 'Farmácia Pague menos', lonLat: [-34.925566965528496, -8.162715660268775 ] },
-      { name: 'Farmácia Central', lonLat: [ -34.92849532859503, -8.161363934808756] }    ];
-
-    this.addMarkers(this.farmacias);
   }
 
     /**
    * Adiciona marcadores ao mapa.
    * @param markers Lista de marcadores com nome e lonLat.
    */
-    addMarkers(markers: Farmacia[] | any[]): void {
+    addMarkers(localizacaoAtual: any, LocalizacaoDesejada: any): void {
 
-      if (markers && markers.length > 0) {
-        markers.forEach((marker: any) => {
-          const pinFeature = new Feature({
-            name: marker.nomeFantasia,
-            coordenadas: marker.longLat,
-            endereco: marker.endereco,
+          const pinLocalizacaoAtual = new Feature({
+            coordenadas: localizacaoAtual,
             type: Point,
-            geometry: new Point(fromLonLat(marker.longLat))
+            geometry: new Point(fromLonLat(localizacaoAtual))
           });
-  
+          pinLocalizacaoAtual.setStyle(this.iconPessoa);
+
+          const pinLocalizacaoDesejada = new Feature({
+            coordenadas: LocalizacaoDesejada,
+            type: Point,
+            geometry: new Point(fromLonLat(LocalizacaoDesejada))
+          });
+          pinLocalizacaoDesejada.setStyle(this.iconStyle);
           
-          if(marker.nome) {
-            pinFeature.setStyle(this.iconStyle);
-          } else {
-            pinFeature.setStyle(this.iconPessoa);
-          }
-  
-          this.vectorLayer.getSource().addFeature(pinFeature);
-        });
+          
+          this.vectorLayer.getSource().addFeature(pinLocalizacaoAtual);
+          this.vectorLayer.getSource().addFeature(pinLocalizacaoDesejada);
 
-            // Adicione a linha entre a localização atual e a latitude/longitude definida
+
     const line = new LineString([
-      fromLonLat(markers[0].longLat),
-      fromLonLat(markers[1].longLat)
-      // fromLonLat([-34.866873107323, -7.119970520549]), // Localização atual
-      // fromLonLat([-34.865892424651, -7.119965784773]) // Latitude/Longitude definida
+      fromLonLat(localizacaoAtual),
+      fromLonLat(LocalizacaoDesejada)
     ]);
-
-    console.log(markers);
     
 
     
@@ -145,22 +130,6 @@ export class MapaDetalheComponent {
     lineFeature.setStyle(lineStyle);
 
     this.vectorLayer.getSource().addFeature(lineFeature);
-        
-        this.map.on('click', (e)=>{
-          let features: any[] = this.map.getFeaturesAtPixel(e.pixel);
-  
-          if (features.length > 0){
-            let dadosFarmacia: any = {
-              nome: features[0].values_.name, 
-              endereco: features[0].values_.endereco,
-              coordenadas: features[0].values_.coordenadas }
-            this.modalService.openDialog('300ms', '150ms', dadosFarmacia,)
-          }
-          
-          
-        })
-
-      }
     }
 
   /**

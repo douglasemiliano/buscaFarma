@@ -1,5 +1,5 @@
 
-<div class="mapa-container">
+<div class="mapa-container" style="position: fixed; z-index: 2;">
     <app-mapa></app-mapa>
 </div>
 
@@ -9,11 +9,10 @@
     </div>
     <div class="row">
         <div class="col-12 col-md-3 col-sm-6" *ngFor="let farmacia of farmacias">
-            <div class="card m-2">
+            <div class="card m-2" style="cursor: pointer;" (click)="goToDetails(farmacia)">
                 <div class="card-body">
-                    <div class="nomeFarmacia text-center" style="font-size: 14pt; margin-bottom: 2rem;" (click)="goToDetails(farmacia)">
+                    <div class="nomeFarmacia text-center" style="font-size: 14pt; margin-bottom: 2rem;">
                         <strong *ngIf="farmacia.nomeFantasia;">{{ farmacia.nomeFantasia }}</strong>
-                        <strong *ngIf="!farmacia.nomeFantasia"> {{farmacia.nome}}</strong>
                     </div>
                     <div class="localizacao d-flex align-items-center justify-content-between">
                         <div class="icone">
@@ -21,9 +20,9 @@
                         </div>
                         <div class="endereco" style="font-size: 10pt; text-align: center;">
                             {{ farmacia.endereco.rua }}, nº {{ farmacia.endereco.numero }}<br>
-                            {{ farmacia.endereco.bairro }}, {{ farmacia.endereco.municipio }} - {{ farmacia.endereco.estado }}
+                            {{ farmacia.endereco.bairro }}, {{ farmacia.municipio }} - {{ farmacia.estado }}
                         </div>
-                        <button mat-fab color="warn" (click)="goToMaps(farmacia.longLat)">
+                        <button mat-fab color="warn" (click)="$event.stopPropagation(); goToMaps(farmacia.longLat)">
                             <i class="fas fa-arrow-right fa-2x"></i>
                         </button>
                     </div>

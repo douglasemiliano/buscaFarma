@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
 import { Estado } from 'src/app/models/estado';
 import { FarmaciaService } from 'src/app/services/farmacia.service';
 
@@ -48,28 +47,27 @@ export class HomeComponent {
   estado: FormControl = new FormControl("PE", [Validators.required])
 
 
-  constructor(private farmaciaService: FarmaciaService, private router: Router) {
+  constructor(private farmaciaService: FarmaciaService) {
     this.getCurrentLocation();
   }
 
   onSubmit() {
     switch (this.tipoBusca) {
       case "estado":
-        this.farmaciaService.buscarFarmaciaPorUF(this.estado.value.toUpperCase());
+        this.farmaciaService.buscarFarmacia("", "", this.estado.value.toUpperCase());
         break
       case "municipio":
-        this.farmaciaService.buscarFarmaciaPorMunicipio(this.estado.value, this.pesquisa.value.toUpperCase().normalize('NFD').replace(/\p{Mn}/gu, ""))
+        this.farmaciaService.buscarFarmacia("", this.pesquisa.value.toUpperCase().normalize('NFD').replace(/\p{Mn}/gu), this.estado.value.toUpperCase());
         break
       case "farmacia":
-        this.farmaciaService.buscarFarmaciaPorNome(this.pesquisa.value.toUpperCase().normalize('NFD').replace(/\p{Mn}/gu, ""))
+        this.farmaciaService.buscarFarmacia("", "", this.pesquisa.value.toUpperCase().normalize('NFD').replace(/\p{Mn}/gu, ""))
         break
 
 
     }
-    this.router.navigate(["resultado"]);
   }
 
-  getCurrentLocation() {
+  public getCurrentLocation() {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(position => {
         this.farmaciaService.setLocalizacaoUsuario([position.coords.latitude, position.coords.longitude])

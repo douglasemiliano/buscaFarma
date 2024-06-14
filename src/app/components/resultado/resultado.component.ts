@@ -20,7 +20,7 @@ export class ResultadoComponent implements AfterViewInit, OnInit, OnDestroy {
   lat: number = 0;
   long: number = 0;
   farmacias: any[];
-  ;
+  contadorFarmacias: number = 0;
   @ViewChild(MapaComponent) mapaComponent: MapaComponent;
 
   private farmaciasSubscription: Subscription;
@@ -36,10 +36,8 @@ export class ResultadoComponent implements AfterViewInit, OnInit, OnDestroy {
     if(this.mapaComponent){
       this.mapaComponent.addMarkers(this.farmacias);
       if(this.farmacias){
-        this.long = this.farmacias[0].longLat[0];
-        this.lat = this.farmacias[0].longLat[1];
-        console.log(this.long, this.lat);
-        
+        this.long = this.farmacias[0].coordenadaGeo.coordinates[0];
+        this.lat = this.farmacias[0].coordenadaGeo.coordinates[1];
       }
       this.mapaComponent.updateSize();
       this.carregarMapa();
@@ -48,31 +46,15 @@ export class ResultadoComponent implements AfterViewInit, OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-
-    
-    
-    if(this.farmacias) {
-      console.log("farmacia");
-      
-    }
-    
-    this.farmaciasSubscription = this.farmaciaService.farmacias.subscribe((data: Farmacia[]) => {
-      
+    this.farmaciasSubscription = this.farmaciaService.farmacias.subscribe((data: any) => {
       this.farmacias = data;
       if(this.mapaComponent){
-        console.log("entrou", this.farmacias);
-        console.log("entrou aqq");
-        this.long = data[0].longLat[0];
-        this.lat = data[0].longLat[1];
+        this.long = data[0].coordenadaGeo.coordinates[0];
+        this.lat = data[0].coordenadaGeo.coordinates[1];
         this.mapaComponent.addMarkers(this.farmacias);
-        this.mapaComponent.updateView([ this.long, this.lat]);
-        console.log(this.mapaComponent);
-        
-      }
-      
-      // Detecta manualmente as mudanças após atualizar os dados
+        this.mapaComponent.updateView([ this.long, this.lat]);   
+      }  
     });
-    // Inicialize os dados ou realize outras operações necessárias ao inicializar o componente
   }
 
   public voltar(){
@@ -91,8 +73,7 @@ export class ResultadoComponent implements AfterViewInit, OnInit, OnDestroy {
      navigator.geolocation.getCurrentPosition(position => {
       this.lat = position.coords.latitude;
       this.long = position.coords.longitude;
-      console.log(position);
-           });
+      });
     }
    else {
     alert("Geolocation is not supported by this browser.");

@@ -112,7 +112,6 @@ farmacias = []
               nome: features[0].values_.name, 
               endereco: features[0].values_.endereco,
               coordenadas: features[0].values_.coordenadas }
-            this.modalService.openDialog('300ms', '150ms', dadosFarmacia,)
           }
           
           

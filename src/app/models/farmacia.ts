@@ -1,18 +1,24 @@
 import { Avaliacao } from "./avaliacao";
 
-export interface Farmacia {
-  nome: string;
-  longLat: number[];
+export class Farmacia {
+  id: string;
+  numeroCNPJ: string;
   nomeFantasia: string;
+  municipio: string;
+  telefone: string[];
+  coordenadaGeo: CoordenadaGeo;
   endereco: Endereco;
-  produtos: string [];
-  avaliacoes: Avaliacao[];
+}
+
+export interface CoordenadaGeo {
+  type: string,
+  coordinates: number[]
 }
 
 export interface Endereco {
     rua: string,
     numero: string,
-    bairro: string,
-    municipio: string,
-    estado: string
+    bairro: string
 }
+
+

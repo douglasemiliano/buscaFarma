@@ -50,6 +50,7 @@ export class DetalhesComponent implements OnInit, OnDestroy, AfterViewInit{
   produtos: string[] = [];
   avaliacoes: Avaliacao[] = [];
   rating: number = 0;
+  public teste: number = 0;
   
   @ViewChild(MapaDetalheComponent) mapaComponent: MapaDetalheComponent;
 
@@ -71,7 +72,7 @@ export class DetalhesComponent implements OnInit, OnDestroy, AfterViewInit{
       console.log(this.localizacao);
       
       
-      this.mapaComponent.addMarkers([this.farmacia, this.localizacao]);
+      this.mapaComponent.addMarkers(this.localizacao.longLat, this.farmacia.coordenadaGeo.coordinates);
       this.mapaComponent.updateView([ this.localizacao.longLat[0], this.localizacao.longLat[1]]);
     }
   }
@@ -105,9 +106,8 @@ export class DetalhesComponent implements OnInit, OnDestroy, AfterViewInit{
   ngOnDestroy(): void {
     this.subscription.unsubscribe();
   }
-
   public carregarMapa(){    
-    this.mapaComponent.updateView([ this.farmacia?.longLat[1], this.farmacia?.longLat[0]]);
+    this.mapaComponent.updateView([ this.farmacia?.coordenadaGeo.coordinates[1], this.farmacia?.coordenadaGeo.coordinates[0]]);
     this.mapaComponent.setTileSource();
     this.mapaComponent.updateSize();
    }
@@ -115,7 +115,7 @@ export class DetalhesComponent implements OnInit, OnDestroy, AfterViewInit{
    getCurrentLocation() {
     this.farmaciaService.localizacaoUsuario.subscribe(data => {
       if (this.mapaComponent){
-        this.mapaComponent.addMarkers(this.posicaoUsuario)
+        this.mapaComponent.addMarkers(this.posicaoUsuario, null)
         this.mapaComponent.updateView(this.posicaoUsuario.longLat[0]);
 ;      }
       this.posicaoUsuario.longLat = data;
@@ -126,6 +126,11 @@ export class DetalhesComponent implements OnInit, OnDestroy, AfterViewInit{
    goToAvaliacao(){
     this.router.navigateByUrl("/avaliacao")
    }
+
+   public goToMaps(longLat: any[]){
+    let url = `https://www.google.com/maps?q=${longLat[1]},${longLat[0]}`;
+   window.open(url, '_blank');
+  }
 
    separarProdutosFarmacia() {
     for(let avaliacao of this.avaliacoes){

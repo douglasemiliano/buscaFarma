@@ -66,14 +66,6 @@ export class MapaComponent {
       })
     });
     
-
-    const markers = [
-      { name: 'Farmácia Lira', lonLat: [ -35.0154, -8.11208] },
-      { name: 'Farmácia Conceição', lonLat: [ -34.919312026758696, -8.15452616440768] },
-      { name: 'Farmácia Prazeres', lonLat: [-34.920683346420596, -8.157437536208423 ] },
-      { name: 'Farmácia Pague menos', lonLat: [-34.925566965528496, -8.162715660268775 ] },
-      { name: 'Farmácia Central', lonLat: [ -34.92849532859503, -8.161363934808756] }    ];
-
     this.addMarkers(this.farmacias);
   }
 
@@ -81,7 +73,7 @@ export class MapaComponent {
    * Adiciona marcadores ao mapa.
    * @param markers Lista de marcadores com nome e lonLat.
    */
-    addMarkers(markers: Farmacia[]): void {
+    addMarkers(markers: any[]): void {
       const iconStyle = new Style({
         image: new Icon({
           anchor: [0.5, 1],
@@ -94,40 +86,17 @@ export class MapaComponent {
         markers.forEach((marker: any) => {
           const pinFeature = new Feature({
             name: marker.nomeFantasia,
-            coordenadas: marker.longLat,
+            coordenadas: marker.coordenadaGeo.coordinates,
             endereco: marker.endereco,
             type: Point,
-            geometry: new Point(fromLonLat(marker.longLat))
+            geometry: new Point(fromLonLat(marker.coordenadaGeo.coordinates))
           });
   
-          
           pinFeature.setStyle(iconStyle);
   
           this.vectorLayer.getSource().addFeature(pinFeature);
         });
 
-            // Adicione a linha entre a localização atual e a latitude/longitude definida
-    const line = new LineString([
-      fromLonLat([-34.866873107323, -7.119970520549]), // Localização atual
-      fromLonLat([-34.865892424651, -7.119965784773]) // Latitude/Longitude definida
-    ]);
-
-    
-    const lineFeature = new Feature({
-      geometry: line
-    });
-    
-    // Estilo personalizado para a linha
-    const lineStyle = new Style({
-      stroke: new Stroke({
-        color: 'blue',
-        width: 4 // Espessura da linha em pixels
-      })
-    });
-
-    lineFeature.setStyle(lineStyle);
-
-    this.vectorLayer.getSource().addFeature(lineFeature);
         
         this.map.on('click', (e)=>{
           let features: any[] = this.map.getFeaturesAtPixel(e.pixel);
@@ -137,7 +106,7 @@ export class MapaComponent {
               nome: features[0].values_.name, 
               endereco: features[0].values_.endereco,
               coordenadas: features[0].values_.coordenadas }
-            this.modalService.openDialog('300ms', '150ms', dadosFarmacia,)
+            this.modalService.openDialog(dadosFarmacia,)
           }
           
           

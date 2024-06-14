@@ -15,14 +15,10 @@ export class TesteComponent {
   public nomeFarmacia: string = ""; 
   public enderecoFarmacia: any;
 
-  constructor(@Inject(MAT_BOTTOM_SHEET_DATA) public data: any, private _bottomSheetRef: MatBottomSheetRef<TesteComponent>) {
+  constructor(@Inject(MAT_DIALOG_DATA) public data: any) {
     console.log(data);
     this.nomeFarmacia = data.dados.nome;
     this.enderecoFarmacia = data.dados.endereco
-  }
-
-  fechar(event: MouseEvent){
-    this._bottomSheetRef.dismiss();
-    event.preventDefault()
+    
   }
 }
