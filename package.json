@@ -1,7 +1,7 @@
 {
-  "name": "angular-openlayers",
+  "name": "angular-buscaFarma",
   "version": "1.0.0",
-  "description": "Example of using Angular and OpenLayers",
+  "description": "buscaFarma",
   "private": true,
   "scripts": {
     "ng": "ng",
@@ -10,23 +10,15 @@
     "watch": "ng build --watch --configuration development",
     "test": "ng test"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/pzaenger/angular-openlayers.git"
-  },
-  "author": "Philipp Zängerling <dev@pzaenger.com> (https://www.pzaenger.com/)",
+  "author": "Douglas Emiliano",
   "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/pzaenger/angular-openlayers/issues"
-  },
   "keywords": [
     "angular",
     "angular-material",
     "docker",
-    "openlayers",
+    "buscaFarma",
     "pm2"
   ],
-  "homepage": "https://github.com/pzaenger/angular-openlayers#readme",
   "dependencies": {
     "@angular/animations": "^16.2.12",
     "@angular/cdk": "^16.2.12",
