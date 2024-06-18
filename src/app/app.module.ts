@@ -15,7 +15,7 @@ import { RouterModule } from '@angular/router';
 import { AppRoutingModule } from './app-rounting.module';
 import { ResultadoComponent } from './components/resultado/resultado.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { FarmaciaService } from './services/farmacia.service';
 import { MapaComponent } from './components/mapa/mapa.component';
 import {MatToolbarModule} from '@angular/material/toolbar';
@@ -35,6 +35,8 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import {MatChipsModule} from '@angular/material/chips';
 import { StarRatingModule } from 'angular-star-rating';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { HttpConfigInterceptorService } from './services/http-config-interceptor.service';
+import { SharedModule } from './shared/shared.module';
 
 @NgModule({
   declarations: [
@@ -72,6 +74,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
     MatNativeDateModule,
     MatAutocompleteModule,
     MatChipsModule,
+    SharedModule,
     StarRatingModule.forRoot() 
    ],
   providers: [
@@ -79,7 +82,8 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
     GeoService,
     FarmaciaService,
     { provide: MAT_DIALOG_DATA, useValue: {} },
-    { provide: MatDialogRef, useValue: {} }
+    { provide: MatDialogRef, useValue: {} },
+    {provide: HTTP_INTERCEPTORS, useClass: HttpConfigInterceptorService, multi:true}
   ],
   bootstrap: [AppComponent]
 })

@@ -4,6 +4,7 @@ import { BehaviorSubject } from 'rxjs';
 import { Farmacia } from '../models/farmacia';
 import { Router } from '@angular/router';
 import { environment } from 'src/environments/environment';
+import { ModalService } from './modal.service';
 
 @Injectable({
   providedIn: 'root'
@@ -21,7 +22,7 @@ export class FarmaciaService {
   localizacaoUsuario: BehaviorSubject<number[]> = new BehaviorSubject<number[]> ([]);
 
   localizacao: number[];
-  constructor(private http: HttpClient, private router: Router) { }
+  constructor(private http: HttpClient, private router: Router, private modalService: ModalService) { }
   
 
 
@@ -32,7 +33,7 @@ export class FarmaciaService {
           this.farmacias.next(farmacias);
           this.router.navigateByUrl("/resultado");
         } else {
-          alert("Nenhum dado encontrado")
+          this.modalService.modalAlerta("Nenhum dado encontrado!")
         }
       }, error: (error: Error) => {
         alert(error)
