@@ -11,9 +11,9 @@ import { ModalService } from './modal.service';
 })
 export class FarmaciaService {
 
-  // private url: string = "http://localhost:8080/farmacias";
+  private url: string = "http://localhost:8080/farmacias";
 
-  private url: string = "https://buscafarmaapi.onrender.com/farmacias";
+  // private url: string = "https://buscafarmaapi.onrender.com/farmacias";
 
   farmacias: BehaviorSubject<any> = new BehaviorSubject<any>(null);
 
@@ -40,6 +40,22 @@ export class FarmaciaService {
       }
     });
   }
+
+  public buscarFarmaciasMaisProximas(latitude: string, longitude: string) {
+    this.http.get<Farmacia[]>(`${this.url}/proximas?latitude=${latitude}&longitude=${longitude}&raioKm=5`).subscribe({
+      next: (farmacias: Farmacia[]) => {
+        if(farmacias.length > 0) {
+          this.farmacias.next(farmacias);
+          this.router.navigateByUrl("/resultado");
+        } else {
+          this.modalService.modalAlerta("Nenhum dado encontrado!")
+        }
+      }, error: (error: Error) => {
+        alert(error)
+      }
+    });
+  }
+
 
   buscarFarmaciaPorUF(UF: string) {
     this.http.get(this.url + "?endereco.estado=" + UF).subscribe(data => {

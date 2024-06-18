@@ -23,3 +23,27 @@ body {
   background-size: cover;
   background-position: center;
 }
+.card {
+  background-color: #f8d7da;
+  border: #721c24 solid 1px;
+}
+
+.card-header {
+  background-color: #dc3545; /* Cor de fundo vermelho */
+  color: white; /* Cor do texto branco */
+}
+
+.card-body {
+  background-color: #f8d7da; /* Cor de fundo rosa claro */
+  border-top: 1px solid #dc3545; /* Borda superior vermelha */
+  color: #721c24; /* Cor do texto vermelho escuro */
+  padding: 1rem; /* Espaçamento interno */
+}
+
+.card-body p {
+  margin-bottom: 0;
+}
+
+.card-header i {
+  margin-right: 0.5rem; /* Espaçamento à direita do ícone */
+}

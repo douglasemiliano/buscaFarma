@@ -13,6 +13,9 @@ export class HomeComponent {
   step: number = 1;
   tipoBusca: string = "estado";
 
+  latitude: number;
+  longitude: number;
+
   estados: Estado[] = [
     { estado: "Acre", uf: "AC" },
     { estado: "Alagoas", uf: "AL" },
@@ -44,7 +47,9 @@ export class HomeComponent {
   ];
 
   pesquisa: FormControl = new FormControl("", [Validators.required])
-  estado: FormControl = new FormControl("PE", [Validators.required])
+  estado: FormControl = new FormControl("Selecione o Estado", [Validators.required])
+  municipio: FormControl = new FormControl("", [Validators.required])
+
 
 
   constructor(private farmaciaService: FarmaciaService) {
@@ -57,19 +62,34 @@ export class HomeComponent {
         this.farmaciaService.buscarFarmacia("", "", this.estado.value.toUpperCase());
         break
       case "municipio":
-        this.farmaciaService.buscarFarmacia("", this.pesquisa.value.toUpperCase().normalize('NFD').replace(/\p{Mn}/gu), this.estado.value.toUpperCase());
+        this.farmaciaService.buscarFarmacia("", this.normalizarString(this.pesquisa.value), this.estado.value.toUpperCase());
         break
       case "farmacia":
-        this.farmaciaService.buscarFarmacia("", "", this.pesquisa.value.toUpperCase().normalize('NFD').replace(/\p{Mn}/gu, ""))
+        this.farmaciaService.buscarFarmacia("", "", this.normalizarString(this.pesquisa.value))
         break
+        case "bairro":
+          this.farmaciaService.buscarFarmacia(this.normalizarString(this.pesquisa.value), this.municipio.value, this.estado.value)
+          break
+    }
+  }
 
+  normalizarString(string: string): string {
+    return string.toUpperCase().normalize('NFD').replace(/\p{Mn}/gu, "")
+  }
 
+  pesquisarPorProximidade(){
+    if(this.latitude && this.longitude){{
+      this.farmaciaService.buscarFarmaciasMaisProximas("-8.169507", "-34.928179")
+    }} else {
+      this.tipoBusca = "proximidade";
     }
   }
 
   public getCurrentLocation() {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(position => {
+        this.latitude = position.coords.latitude;
+        this.longitude = position.coords.longitude;
         this.farmaciaService.setLocalizacaoUsuario([position.coords.latitude, position.coords.longitude])
       });
     }

@@ -3,25 +3,17 @@ import Map from 'ol/Map';
 import View from 'ol/View';
 import TileLayer from 'ol/layer/Tile';
 import VectorLayer from 'ol/layer/Vector';
-import ZoomToExtent from 'ol/control/ZoomToExtent';
-import FullScreen from 'ol/control/FullScreen';
-import Attribution from 'ol/control/Attribution';
 import OsmSource from 'ol/source/OSM';
 import StamenSource from 'ol/source/Stamen';
 import VectorSource from 'ol/source/Vector';
 import { fromLonLat } from 'ol/proj';
-import { defaults as defaultControls } from 'ol/control';
 import { defaults as defaultInteractions, PinchZoom } from 'ol/interaction';
-import { Injectable } from '@angular/core';
 import { Feature } from 'ol';
 import { Point } from 'ol/geom';
 import Style from 'ol/style/Style';
 import Icon from 'ol/style/Icon';
-import { Farmacia } from 'src/app/models/farmacia';
 import { ModalService } from 'src/app/services/modal.service';
 import { Vector } from 'src/app/models/vector';
-import LineString from 'ol/geom/LineString';
-import Stroke from 'ol/style/Stroke';
 
 
 @Component({
@@ -121,7 +113,7 @@ export class MapaComponent {
    * @param center Center in long/lat.
    */
   updateView(localizacao: any[]): void {        
-    this.map.getView().setZoom(8);
+    this.map.getView().setZoom(10);
     this.map.getView().setCenter(fromLonLat(localizacao));
   }
 
