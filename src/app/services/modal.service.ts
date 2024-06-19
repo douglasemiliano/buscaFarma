@@ -11,15 +11,21 @@ export class ModalService {
 
   private dialogRef: MatDialogRef<LoadingComponent>;
   private dialogRefAlerta: MatDialogRef<ModalAlertaComponent>;
+  private dialogRefMapa: MatDialogRef<TesteComponent>;
 
   constructor(public dialog: MatDialog) { }
 
   openDialog(dados: any): void {
-    this.dialog.open(TesteComponent, {
+    this.dialogRefMapa = this.dialog.open(TesteComponent, {
+      disableClose: true,
       data: {
         dados: dados
       }
     });
+  }
+
+  closeMapa(){
+    this.dialogRefMapa.close();
   }
 
   openLoading() {
