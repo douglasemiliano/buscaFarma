@@ -21,15 +21,16 @@ export class ResultadoComponent implements AfterViewInit, OnInit, OnDestroy {
   long: number = 0;
   farmacias: any[];
   contadorFarmacias: number = 0;
+  posicaoUsuario: number[]
   @ViewChild(MapaComponent) mapaComponent: MapaComponent;
 
   private farmaciasSubscription: Subscription;
 
    constructor(private appService: AppService, 
-
     private farmaciaService: FarmaciaService,
     private router: Router,
-    private location: Location) {
+    private location: Location,
+    private cdr: ChangeDetectorRef) {
   }
   
   ngAfterViewInit(): void {
@@ -69,15 +70,10 @@ export class ResultadoComponent implements AfterViewInit, OnInit, OnDestroy {
   }
 
   getCurrentLocation() {
-    if (navigator.geolocation) {
-     navigator.geolocation.getCurrentPosition(position => {
-      this.lat = position.coords.latitude;
-      this.long = position.coords.longitude;
-      });
-    }
-   else {
-    alert("Geolocation is not supported by this browser.");
-    }
+    this.farmaciaService.localizacaoUsuario.subscribe(data => {
+      this.posicaoUsuario = data;
+      this.cdr.detectChanges();
+    });
    }
 
    public carregarMapa(){    
@@ -95,4 +91,23 @@ export class ResultadoComponent implements AfterViewInit, OnInit, OnDestroy {
     this.farmaciaService.setFarmaciaAtual(farmacia);
     this.router.navigate(["detalhes"])
    }
+
+   calculateDistance(lat2: number, lon2: number): string {
+    const R = 6371; // Raio da Terra em km
+    const dLat = this.deg2rad(lat2 - this.posicaoUsuario[0]); // Diferença de latitude em radianos
+    const dLon = this.deg2rad(lon2 - this.posicaoUsuario[1]); // Diferença de longitude em radianos
+    const a =
+      Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+      Math.cos(this.deg2rad(this.posicaoUsuario[0])) * Math.cos(this.deg2rad(lat2)) *
+      Math.sin(dLon / 2) * Math.sin(dLon / 2);
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    const distance = R * c; // Distância em km
+    return distance.toFixed(2);
+  }
+
+  // Método auxiliar para converter graus em radianos
+  private deg2rad(deg: number): number {
+    return deg * (Math.PI / 180);
+  }
+
 }

@@ -19,6 +19,8 @@
               <img *ngIf="this.rating < 1 && this.rating > 0" src="https://i.pinimg.com/originals/30/22/14/3022141f9c61b7863349eec1dc50070e.gif" style="height: 3rem;" [title]="this.rating" alt="">
             </div>
         </div>
+        <p style="font-size: 9pt;" *ngIf="posicaoUsuario"> aproximadamente {{calculateDistance(farmacia.coordenadaGeo.coordinates[0], farmacia.coordenadaGeo.coordinates[1])}}km de distância</p>
+
         <div class="endereco d-flex align-items-top justify-content-between">
           <div class="info-endereco d-flex justify-content-center align-items-center">
             <span class="mx-2">

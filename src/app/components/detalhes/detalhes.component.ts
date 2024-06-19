@@ -147,4 +147,23 @@ export class DetalhesComponent implements OnInit, OnDestroy, AfterViewInit{
     let soma: number = listaRating.reduce((acumulador: number, elemento: number) => acumulador + elemento, 0);
     this.rating = soma / listaRating.length;
    }
+
+   calculateDistance(lat2: number, lon2: number): string {
+    const R = 6371; // Raio da Terra em km
+    const dLat = this.deg2rad(lat2 - this.posicaoUsuario.longLat[0]); // Diferença de latitude em radianos
+    const dLon = this.deg2rad(lon2 - this.posicaoUsuario.longLat[1]); // Diferença de longitude em radianos
+    const a =
+      Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+      Math.cos(this.deg2rad(this.posicaoUsuario.longLat[0])) * Math.cos(this.deg2rad(lat2)) *
+      Math.sin(dLon / 2) * Math.sin(dLon / 2);
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    const distance = R * c; // Distância em km
+    return distance.toFixed(2);
+  }
+
+  // Método auxiliar para converter graus em radianos
+  private deg2rad(deg: number): number {
+    return deg * (Math.PI / 180);
+  }
+
 }

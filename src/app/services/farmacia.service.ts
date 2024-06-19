@@ -87,4 +87,5 @@ export class FarmaciaService {
   avaliar(avaliacao: any, id: number) {
     return this.http.patch(this.url + "/" + id, avaliacao);
   }
+  
 }

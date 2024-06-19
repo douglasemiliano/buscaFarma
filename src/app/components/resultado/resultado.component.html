@@ -13,6 +13,7 @@
                 <div class="card-body">
                     <div class="nomeFarmacia text-center" style="font-size: 14pt; margin-bottom: 2rem;">
                         <strong *ngIf="farmacia.nomeFantasia;">{{ farmacia.nomeFantasia }}</strong>
+                        <p style="font-size: 9pt;" *ngIf="posicaoUsuario"> aproximadamente {{calculateDistance(farmacia.coordenadaGeo.coordinates[0], farmacia.coordenadaGeo.coordinates[1])}}km de distância</p>
                     </div>
                     <div class="localizacao d-flex align-items-center justify-content-between">
                         <div class="icone">
@@ -22,7 +23,7 @@
                             {{ farmacia.endereco.rua }}, nº {{ farmacia.endereco.numero }}<br>
                             {{ farmacia.endereco.bairro }}, {{ farmacia.municipio }} - {{ farmacia.estado }}
                         </div>
-                        <button mat-fab color="warn" (click)="$event.stopPropagation(); goToMaps(farmacia.longLat)">
+                        <button mat-fab color="warn" (click)="$event.stopPropagation(); goToMaps(farmacia.coordenadaGeo.coordinates)">
                             <i class="fas fa-arrow-right fa-2x"></i>
                         </button>
                     </div>
