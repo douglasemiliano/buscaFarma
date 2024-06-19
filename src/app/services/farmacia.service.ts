@@ -11,9 +11,9 @@ import { ModalService } from './modal.service';
 })
 export class FarmaciaService {
 
-  private url: string = "http://localhost:8080/farmacias";
+  // private url: string = "http://localhost:8080/farmacias";
 
-  // private url: string = "https://buscafarmaapi.onrender.com/farmacias";
+  private url: string = "https://buscafarmaapi.onrender.com/farmacias";
 
   farmacias: BehaviorSubject<any> = new BehaviorSubject<any>(null);
 
