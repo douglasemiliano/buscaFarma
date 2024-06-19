@@ -78,10 +78,10 @@ export class HomeComponent {
   }
 
   pesquisarPorProximidade(){
-    if(this.latitude && this.longitude){{
-      this.farmaciaService.buscarFarmaciasMaisProximas("-8.169507", "-34.928179")
+    if(this.latitude === undefined || this.longitude == undefined){{
+      this.selecionarTipoBusca("proximidade");
     }} else {
-      this.tipoBusca = "proximidade";
+      this.farmaciaService.buscarFarmaciasMaisProximas(this.latitude, this.longitude)
     }
   }
 

@@ -41,7 +41,7 @@ export class FarmaciaService {
     });
   }
 
-  public buscarFarmaciasMaisProximas(latitude: string, longitude: string) {
+  public buscarFarmaciasMaisProximas(latitude: number, longitude: number) {
     this.http.get<Farmacia[]>(`${this.url}/proximas?latitude=${latitude}&longitude=${longitude}&raioKm=5`).subscribe({
       next: (farmacias: Farmacia[]) => {
         if(farmacias.length > 0) {
