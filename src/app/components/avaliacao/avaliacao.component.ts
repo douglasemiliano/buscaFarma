@@ -3,8 +3,10 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { Router } from '@angular/router';
 import { Observable, map, startWith } from 'rxjs';
-import { Avaliacao, EstruturaFarmacia, InformacoesBasicas } from 'src/app/models/avaliacao';
+import { Avaliacao } from 'src/app/models/avaliacao';
+import { Farmacia } from 'src/app/models/farmacia';
 import { FarmaciaService } from 'src/app/services/farmacia.service';
+import { ModalService } from 'src/app/services/modal.service';
 
 @Component({
   selector: 'app-avaliacao',
@@ -12,17 +14,25 @@ import { FarmaciaService } from 'src/app/services/farmacia.service';
   styleUrls: ['./avaliacao.component.scss']
 })
 export class AvaliacaoComponent implements OnInit {
-  firstFormGroup: FormGroup;
-  secondFormGroup: FormGroup;
-  thirdFormGroup: FormGroup;
-  fourthFormGroup: FormGroup;
+
+
+  nota: FormControl = new FormControl();
+
+  avaliacaoForm: FormGroup;
+
+  atendimentoForm: FormGroup;
+  produtoForm: FormGroup;
+  comentario: FormControl = new FormControl("", [Validators.required]);
+
+  patologia: string;
+  public marcadorAnonimo: boolean = false;
+
   informacoesForm: FormGroup;
-  medicines: string[] = ['Paracetamol', 'Ibuprofeno', 'Aspirina', 'Amoxicilina', 'Cetirizina'];
   rating: number = 0;
   medicationControl = new FormControl();
   filteredMedications: Observable<any[]>;
 
-  farmacia: any;
+  farmacia: Farmacia;
   avaliacoes: Avaliacao [] = [];
 
   patternCpf = Validators.pattern(/^\d{3}\.\d{3}\.\d{3}\-\d{2}$/);
@@ -60,117 +70,89 @@ export class AvaliacaoComponent implements OnInit {
   
   selectedMedications: any[] = [];
 
-  constructor(private _formBuilder: FormBuilder, private service: FarmaciaService, private router: Router) {}
+  constructor(private fb: FormBuilder, private service: FarmaciaService, private router: Router, private modalService: ModalService) {}
 
   ngOnInit() {
-
-    this.service.farmaciaAtual.subscribe((farmacia: any) => {
-      console.log(farmacia);
-      this.farmacia = farmacia;
-      this.avaliacoes = farmacia?.avaliacoes ? farmacia.avaliacoes : []
-      console.log(this.avaliacoes);
-      
+    this.service.farmaciaAtual.subscribe( {
+      next: (farmacia: Farmacia | null) => {
+        if(farmacia) {
+          this.farmacia = farmacia;
+        }
+      }, error : (error: any) => {
+        console.log(error);
+      }
     })
-
-    this.filteredMedications = this.medicationControl.valueChanges
-    .pipe(
-      startWith(''),
-      map(value => this._filterMedications(value))
-    );
-
-    this.informacoesForm = this._formBuilder.group({
-      name: ["", Validators.required],
-      cpf: ["", Validators.required],
-      birthDate: ["", Validators.required],
-      gender: ["", Validators.required]
-      // Campo do formulário para o rating
-    });
-
-    this.firstFormGroup = this._formBuilder.group({
-      rating: ['', Validators.required]
-    });
-    this.secondFormGroup = this._formBuilder.group({
-      fila: ['', Validators.required],
-      qualidadeAtendimento: ['', Validators.required],
-      isProdutoDisponivel: ['', Validators.required],
-      tipoProduto: ['', Validators.required],
-      horario: ['', Validators.required],
-
-    });
-    this.thirdFormGroup = this._formBuilder.group({
-      produtos: [[], Validators.required]
-    });
-    this.fourthFormGroup = this._formBuilder.group({
-      comentario: ['']
-    });
-  }
-
-  private _filterMedications(value: string): any[] {
-    const filterValue = value.toLowerCase();
-
-    return this.medications.filter(medication => medication.name.toLowerCase().includes(filterValue));
-  }
-
-  submitReview() {
-
-    let comentario: string = this.fourthFormGroup.value.comentario;
-    let informacoes: InformacoesBasicas =  this.informacoesForm.value;
-    let produtos: string[] = this.thirdFormGroup.value.produtos;
-    let rating: number = this.rating;
-    let estruturaFarmacia: EstruturaFarmacia = this.secondFormGroup.value;
-
-    const avaliacao = new Avaliacao(comentario, informacoes, produtos, rating, estruturaFarmacia);
-    console.log(avaliacao);
-
-    this.avaliacoes.push(avaliacao);
-    
-    // const avaliacao: Avaliacao = {
-    //   comentario: this.fourthFormGroup.value.comentario,
-    //   informacoes: this.informacoesForm.value,
-    //   produtos: this.thirdFormGroup.value.produtos,
-    //   rating: this.rating,
-    //   estruturaFarmacia: this.secondFormGroup.value
-    // };
-
-    // const reviewData = {
-    //   "avaliacao": {
-    //     rating: this.rating,
-    //     structure: this.secondFormGroup.value,
-    //     medicines: this.thirdFormGroup.value.medicines,
-    //     comments: this.fourthFormGroup.value.comments,
-    //     informacoes: this.informacoesForm.value
-    //   }
-    // };
-    
-    this.service.avaliar({"avaliacoes": this.avaliacoes}, this.farmacia.id).subscribe(data => {
-      this.router.navigateByUrl("/home");
-      alert("avaliação realizada com sucesso, em instantes ela será publicada!")
-    }, error => {
-      console.log(error);
-      
-    })
-    // Lógica para enviar a avaliação ao servidor ou processá-la conforme necessário.
-  }
-
-  onRatingChanged(rating: number) {
-    this.rating = rating;
-    this.firstFormGroup.get("rating")?.setValue(rating);
-    // Aqui você pode adicionar lógica para lidar com a alteração da nota
-  }
-
-
-  remove(medicine: any): void {
-    this.selectedMedications = this.selectedMedications.filter(item => item !== medicine);
-  }
-
-  selected(event: MatAutocompleteSelectedEvent): void {
-    if (!this.selectedMedications.includes(event.option.viewValue)) {
-      this.selectedMedications.push(event.option.viewValue);
-      this.thirdFormGroup.get("produtos")?.setValue(this.selectedMedications);
+    this.iniciarFormularios();
     }
-    this.medicationControl.setValue("")
-
-  }
   
+  iniciarFormularios() {
+    this.atendimentoForm = this.fb.group({
+      houveFila: new FormControl("", [Validators.required]),
+      horarioAtendimento: new FormControl("", [Validators.required]),
+      tipoAdquirido: new FormControl("", [Validators.required]),
+      qualidadeAtendimento: new FormControl("", [Validators.required]),
+    });
+
+    this.produtoForm = this.fb.group({
+      principioAtivo: new FormControl("", [Validators.required]),
+      patologia: new FormControl("", [Validators.required]),
+      modalidade: new FormControl("GRATUIDADE", [Validators.required]),
+    });
+
+    this.informacoesForm = this.fb.group({
+      genero: new FormControl("", [Validators.required]),
+      dataNascimento: new FormControl("", [Validators.required]),
+      rg: new FormControl("", [Validators.required]),
+      anonimo: new FormControl("", Validators.required)
+    })
+  }
+
+  onRatingChanged(nota: number) {
+    this.rating = nota;
+    this.nota.setValue(nota);
+    this.crateAvaliacao();
+  }
+
+  crateAvaliacao(): Avaliacao{
+    let avaliacao: Avaliacao = new Avaliacao();
+    avaliacao.setId(this.farmacia.id);
+    avaliacao.setNumeroCnpj(this.farmacia.numeroCNPJ)
+    avaliacao.setNota(this.rating);
+    avaliacao.setHouveFila(true ? this.atendimentoForm.get("houveFila")?.value === "true": false);
+    avaliacao.setHorarioAtendimento(this.atendimentoForm.get("horarioAtendimento")?.value)
+    avaliacao.setTipoAdquirido(this.atendimentoForm.get("tipoAdquirido")?.value)
+    avaliacao.setQualidadeAtendimento(this.atendimentoForm.get("qualidadeAtendimento")?.value)
+    avaliacao.setDataAvaliacao(new Date().toISOString()); 
+    avaliacao.setPrincipioAtivo(this.produtoForm.get("principioAtivo")?.value);
+    avaliacao.setPatologia(this.produtoForm.get("patologia")?.value);
+    avaliacao.setTipoModalidade(this.produtoForm.get("modalidade")?.value);
+    avaliacao.setComentario(this.comentario.value);
+    avaliacao.setNumeroDocumento(this.informacoesForm.get("rg")?.value);
+    if (this.informacoesForm.get("rg")?.value) {
+      avaliacao.setMarcadorAnonimo(false);
+    } else {
+      avaliacao.setMarcadorAnonimo(true);
+    }
+
+    return avaliacao;
+  }
+
+  public onSubmit(){
+    this.service.avaliar(this.crateAvaliacao(), this.farmacia.id).subscribe({
+      next: data => {
+        this.modalService.modalSucesso("Avaliação realizada com sucesso!");
+        this.router.navigateByUrl("/home");
+      }, error: error => {
+        this.modalService.modalAlerta(error.error.text)
+      }
+    })
+  }
+
+   selecionarPatologia(event: Event){
+    let listanova = this.medications.filter( item => item.name === event)
+    this.patologia = listanova[0].indication;
+    this.produtoForm.get("patologia")?.setValue(listanova[0].indication)
+  }
+
 
 }

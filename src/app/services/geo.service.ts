@@ -99,14 +99,7 @@ farmacias = []
         });
         
         this.map.on('click', (e)=>{
-          console.log(e);
-  
           let features: any[] = this.map.getFeaturesAtPixel(e.pixel);
-  
-          console.log(features);
-  
-          // alert(features[0].values_.name)
-  
           if (features.length > 0){
             let dadosFarmacia: any = {
               nome: features[0].values_.name, 

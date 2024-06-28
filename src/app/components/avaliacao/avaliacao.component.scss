@@ -24,8 +24,8 @@
   
   .star {
     display: inline-block;
-    width: 65px; /* Largura de cada estrela */
-    height: 65px; /* Altura de cada estrela */
+    width: 50px; /* Largura de cada estrela */
+    height: 50px; /* Altura de cada estrela */
     background-image: url('https://upload.wikimedia.org/wikipedia/commons/thumb/e/e7/Empty_Star.svg/2048px-Empty_Star.svg.png'); /* URL da imagem da estrela */
     background-size: contain;
     background-repeat: no-repeat;
@@ -54,4 +54,12 @@
     align-items: center;
     justify-content: space-between;
     width: 100%;
+  }
+
+  .show {
+    visibility: visible;
+  }
+
+  .hide {
+    visibility: hidden;
   }

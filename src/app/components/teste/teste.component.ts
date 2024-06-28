@@ -17,7 +17,6 @@ export class TesteComponent {
   public enderecoFarmacia: any;
 
   constructor(@Inject(MAT_DIALOG_DATA) public data: any, private modalService: ModalService) {
-    console.log(data);
     this.nomeFarmacia = data.dados.nome;
     this.enderecoFarmacia = data.dados.endereco
     

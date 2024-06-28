@@ -5,15 +5,16 @@ import { Farmacia } from '../models/farmacia';
 import { Router } from '@angular/router';
 import { environment } from 'src/environments/environment';
 import { ModalService } from './modal.service';
+import { Avaliacao } from '../models/avaliacao';
 
 @Injectable({
   providedIn: 'root'
 })
 export class FarmaciaService {
 
-  // private url: string = "http://localhost:8080/farmacias";
+  // private url: string = "http://localhost:8080";
 
-  private url: string = "https://buscafarmaapi.onrender.com/farmacias";
+  private url: string = "https://buscafarmaapi.onrender.com";
 
   farmacias: BehaviorSubject<any> = new BehaviorSubject<any>(null);
 
@@ -27,7 +28,7 @@ export class FarmaciaService {
 
 
   public buscarFarmacia(bairro: string = "", municipio: string = "", UF: string) {
-    this.http.get<Farmacia[]>(`${this.url}/busca?bairro=${bairro}&municipio=${municipio}&estado=${UF}`).subscribe({
+    this.http.get<Farmacia[]>(`${this.url}/farmacias/busca?bairro=${bairro}&municipio=${municipio}&estado=${UF}`).subscribe({
       next: (farmacias: Farmacia[]) => {
         if(farmacias.length > 0) {
           this.farmacias.next(farmacias);
@@ -35,14 +36,15 @@ export class FarmaciaService {
         } else {
           this.modalService.modalAlerta("Nenhum dado encontrado!")
         }
-      }, error: (error: Error) => {
-        alert(error)
-      }
+      }, error: (error: Error | any) => {
+        console.log(error);
+        
+        this.modalService.modalAlerta(error.error.message)      }
     });
   }
 
   public buscarFarmaciasMaisProximas(latitude: number, longitude: number) {
-    this.http.get<Farmacia[]>(`${this.url}/proximas?latitude=${latitude}&longitude=${longitude}&raioKm=5`).subscribe({
+    this.http.get<Farmacia[]>(`${this.url}/farmacias/proximas?latitude=${latitude}&longitude=${longitude}&raioKm=5`).subscribe({
       next: (farmacias: Farmacia[]) => {
         if(farmacias.length > 0) {
           this.farmacias.next(farmacias);
@@ -51,7 +53,9 @@ export class FarmaciaService {
           this.modalService.modalAlerta("Nenhum dado encontrado!")
         }
       }, error: (error: Error) => {
-        alert(error)
+        console.log(error);
+        
+        this.modalService.modalAlerta(error.message)
       }
     });
   }
@@ -84,8 +88,11 @@ export class FarmaciaService {
     this.localizacaoUsuario.next(localizacao);
   }
 
-  avaliar(avaliacao: any, id: number) {
-    return this.http.patch(this.url + "/" + id, avaliacao);
+  avaliar(avaliacao: Avaliacao, idFarmacia: string) {
+    return this.http.post(this.url + "/avaliacao/" + idFarmacia, avaliacao);
   }
   
+  getAvaliacao(idFarmacia: string) {
+    return this.http.get(this.url + "/avaliacao/" + idFarmacia);
+  }
 }

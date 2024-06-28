@@ -7,6 +7,8 @@ import { MapaComponent } from '../mapa/mapa.component';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { MapaDetalheComponent } from '../mapa-detalhe/mapa-detalhe.component';
 import { Avaliacao } from 'src/app/models/avaliacao';
+import { AvaliacaoResponseDTO } from 'src/app/models/AvaliacaoResponseDTO';
+import { ModalService } from 'src/app/services/modal.service';
 
 @Component({
   selector: 'app-detalhes',
@@ -18,7 +20,7 @@ export class DetalhesComponent implements OnInit, OnDestroy, AfterViewInit{
   lat: number;
   long: number;
   private subscription: Subscription
- 
+  private subscription2: Subscription
   public farmacia: any = {
     nome: 'Farmácia ABC',
     longLat: [ -34.865892424651,
@@ -51,10 +53,12 @@ export class DetalhesComponent implements OnInit, OnDestroy, AfterViewInit{
   avaliacoes: Avaliacao[] = [];
   rating: number = 0;
   public teste: number = 0;
+
+  avaliacao: AvaliacaoResponseDTO;
   
   @ViewChild(MapaDetalheComponent) mapaComponent: MapaDetalheComponent;
 
-  constructor(private farmaciaService: FarmaciaService, private router: Router, private activatedRoute: ActivatedRoute){
+  constructor(private farmaciaService: FarmaciaService, private router: Router, private activatedRoute: ActivatedRoute, private modalService: ModalService){
         // // Observa as mudanças de rota
         // this.router.events.pipe(
         //   filter(event => event instanceof NavigationEnd)
@@ -67,11 +71,7 @@ export class DetalhesComponent implements OnInit, OnDestroy, AfterViewInit{
 
   ngAfterViewInit(): void {
     this.carregarMapa();
-    if(this.mapaComponent){
-      console.log(this.farmaciaService.localizacao);
-      console.log(this.localizacao);
-      
-      
+    if(this.mapaComponent){   
       this.mapaComponent.addMarkers(this.localizacao.longLat, this.farmacia.coordenadaGeo.coordinates);
       this.mapaComponent.updateView([ this.localizacao.longLat[0], this.localizacao.longLat[1]]);
     }
@@ -84,27 +84,24 @@ export class DetalhesComponent implements OnInit, OnDestroy, AfterViewInit{
 
   ngOnInit(): void {
     this.getCurrentLocation();
-    this.localizacao.longLat = this.farmaciaService.localizacao;
-    console.log(this.localizacao);
-    
+    this.localizacao.longLat = this.farmaciaService.localizacao;    
     this.subscription = this.farmaciaService.farmaciaAtual.subscribe( {
-      next: (farmacia: any) => {
+      next: (farmacia: Farmacia | any) => {
         if(farmacia) {
-          console.log(farmacia);        
           this.farmacia = farmacia;
           this.avaliacoes = farmacia.avaliacoes ? farmacia.avaliacoes : [];
           this.separarProdutosFarmacia();
           this.calcularMediaDeRating();
+          this.getAvaliacao(farmacia.id)
         }
       }, error : (error: any) => {
-        console.log(error);
-
       }
     })
   }
 
   ngOnDestroy(): void {
     this.subscription.unsubscribe();
+    this.subscription2.unsubscribe();
   }
   public carregarMapa(){    
     this.mapaComponent.updateView([ this.farmacia?.coordenadaGeo.coordinates[1], this.farmacia?.coordenadaGeo.coordinates[0]]);
@@ -113,7 +110,7 @@ export class DetalhesComponent implements OnInit, OnDestroy, AfterViewInit{
    }
 
    getCurrentLocation() {
-    this.farmaciaService.localizacaoUsuario.subscribe(data => {
+    this.subscription2 = this.farmaciaService.localizacaoUsuario.subscribe(data => {
       if (this.mapaComponent){
         this.mapaComponent.addMarkers(this.posicaoUsuario, null)
         this.mapaComponent.updateView(this.posicaoUsuario.longLat[0]);
@@ -133,10 +130,10 @@ export class DetalhesComponent implements OnInit, OnDestroy, AfterViewInit{
   }
 
    separarProdutosFarmacia() {
-    for(let avaliacao of this.avaliacoes){
-      this.produtos = this.produtos.concat(avaliacao.produtos);
-      this.comentarios.push(avaliacao.comentario)
-    }
+    // for(let avaliacao of this.avaliacoes){
+    //   this.produtos = this.produtos.concat(avaliacao);
+    //   this.comentarios.push(avaliacao.comentario)
+    // }
    }
 
    calcularMediaDeRating() {
@@ -166,4 +163,11 @@ export class DetalhesComponent implements OnInit, OnDestroy, AfterViewInit{
     return deg * (Math.PI / 180);
   }
 
+  private getAvaliacao(farmaciaId: string) {
+    this.farmaciaService.getAvaliacao(farmaciaId).subscribe({
+      next: (avaliacao: AvaliacaoResponseDTO | any) => {
+        this.avaliacao = avaliacao;
+      }
+    });
+  }
 }
