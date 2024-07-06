@@ -46,15 +46,11 @@ export class ResultadoComponent implements AfterViewInit, OnInit, OnDestroy {
       this.mapaComponent.updateSize();
       this.carregarMapa();
       this.getCurrentLocation();
-
-
     }
   }
 
-
   reberEventoMelhorAvaliadasClick(){
     console.log("melhor avaliadas");
-    
   }
 
   ordenarPorDistancia(){
@@ -62,12 +58,15 @@ export class ResultadoComponent implements AfterViewInit, OnInit, OnDestroy {
       farmacia.distance = this.calculateDistance(farmacia.coordenadaGeo.coordinates[0], farmacia.coordenadaGeo.coordinates[1])
     }
     this.farmacias.sort((a, b) => a.distance - b.distance);
+  }
 
+  limparFiltros(){
+      this.farmacias.sort((a, b) => a.id.localeCompare(b.id));
   }
 
   ngOnInit(): void {
     this.farmaciasSubscription = this.farmaciaService.farmacias.subscribe((data: any) => {
-      this.farmacias = data;      
+      this.farmacias = data;
       if(this.mapaComponent){
         this.long = data[0].coordenadaGeo.coordinates[0];
         this.lat = data[0].coordenadaGeo.coordinates[1];

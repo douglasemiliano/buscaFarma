@@ -5,7 +5,7 @@
 <div class="lista-farmacias">
    
     <div class="container" style="position: fixed; z-index: 20; margin-top: -2rem;">
-        <app-fab-button (maisProximoEvent)="ordenarPorDistancia()" (maisBemAvaliadasEvent)="reberEventoMelhorAvaliadasClick()"></app-fab-button>
+        <app-fab-button (maisProximoEvent)="ordenarPorDistancia()" (maisBemAvaliadasEvent)="reberEventoMelhorAvaliadasClick()" (limparEvent)="limparFiltros()"></app-fab-button>
     </div>
 
     <div class="row mx-2 contador" *ngIf="farmacias">

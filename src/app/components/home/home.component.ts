@@ -75,7 +75,6 @@ export class HomeComponent implements OnInit {
     this.farmaciaService.buscarBairroPorUFeMunicipio(this.estado.value, municipio).subscribe({
       next: (data => {
         this.bairros = data;
-        console.log(this.bairros);
       })
     })
 

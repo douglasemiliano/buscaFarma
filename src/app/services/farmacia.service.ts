@@ -36,8 +36,7 @@ export class FarmaciaService {
           this.modalService.modalAlerta("Nenhum dado encontrado!")
         }
       }, error: (error: Error | any) => {
-        console.log(error);
-        
+        console.log(error);        
         this.modalService.modalAlerta(error.error.message)      }
     });
   }
