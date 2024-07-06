@@ -2,11 +2,16 @@
 <div class="mapa-container" style="position: fixed; z-index: 2;">
     <app-mapa></app-mapa>
 </div>
-
 <div class="lista-farmacias">
+   
+    <div class="container" style="position: fixed; z-index: 20; margin-top: -2rem;">
+        <app-fab-button (maisProximoEvent)="ordenarPorDistancia()" (maisBemAvaliadasEvent)="reberEventoMelhorAvaliadasClick()"></app-fab-button>
+    </div>
+
     <div class="row mx-2 contador" *ngIf="farmacias">
         {{farmacias.length}} farmácias encontradas
     </div>
+      
     <div class="row">
         <div class="col-12 col-md-3 col-sm-6" *ngFor="let farmacia of farmacias">
             <div class="card m-2" style="cursor: pointer;" (click)="goToDetails(farmacia)">

@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { Observable, map, startWith } from 'rxjs';
 import { Estado } from 'src/app/models/estado';
 import { FarmaciaService } from 'src/app/services/farmacia.service';
 
@@ -8,10 +9,11 @@ import { FarmaciaService } from 'src/app/services/farmacia.service';
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss']
 })
-export class HomeComponent {
+export class HomeComponent implements OnInit {
 
   step: number = 1;
   tipoBusca: string = "estado";
+  selected: any;
 
   latitude: number;
   longitude: number;
@@ -46,14 +48,38 @@ export class HomeComponent {
     { estado: "Tocantins", uf: "TO" }
   ];
 
-  pesquisa: FormControl = new FormControl("", [Validators.required])
-  estado: FormControl = new FormControl("Selecione o Estado", [Validators.required])
-  municipio: FormControl = new FormControl("", [Validators.required])
+  municipios: string[] = []
+  municipiosFiltrados: Observable<string[]>;
+  bairros: string[] = [];
+
+  pesquisa: FormControl = new FormControl(null, [Validators.required])
+  estado: FormControl = new FormControl(null, [Validators.required])
+  municipio: FormControl = new FormControl(null, [Validators.required])
+  bairro: FormControl = new FormControl(null, [Validators.required])
+
 
 
 
   constructor(private farmaciaService: FarmaciaService) {
     this.getCurrentLocation();
+  }
+
+  public ngOnInit(): void {
+  }
+
+  public buscarMunicipiosPorEstado(UF: string) {
+    this.farmaciaService.buscarMunicipiosPorUF(UF);
+  }
+
+  public carregarBairro(municipio: string){
+    this.farmaciaService.buscarBairroPorUFeMunicipio(this.estado.value, municipio).subscribe({
+      next: (data => {
+        this.bairros = data;
+        console.log(this.bairros);
+      })
+    })
+
+    
   }
 
   onSubmit() {
@@ -103,7 +129,31 @@ export class HomeComponent {
     this.step = this.step + 1;
   }
 
+  public carregarMunicipios(UF: string) {
+    this.farmaciaService.buscarMunicipiosPorUF(this.estado.value.toUpperCase()).subscribe({
+      next: (data => {
+        this.municipios = data;
+        this.iniciarFiltro();
+      })
+    })
+  }
+
   public voltarStep() {
     this.step = this.step - 1;
   }
+
+
+  iniciarFiltro() {
+    this.municipiosFiltrados = this.pesquisa.valueChanges.pipe(
+      startWith(''),
+      map(value => this._filter(value || '')),
+    );
+  }
+
+  private _filter(value: string): string[] {
+    const filterValue = value.toLowerCase();
+
+    return this.municipios.filter(municipio => municipio.toLowerCase().includes(filterValue));
+  }
+
 }

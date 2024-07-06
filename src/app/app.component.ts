@@ -16,13 +16,13 @@ export class AppComponent {
   rotaAtual: string = ""
 
   constructor(private router: Router,   private location: Location){
+    
     this.router.events.pipe(
       filter(event => event instanceof NavigationEnd)
     ).subscribe((event: any) => {
       this.rotaAtual = event.urlAfterRedirects;
     });
     
-     
   }
 
   public goToHome(){

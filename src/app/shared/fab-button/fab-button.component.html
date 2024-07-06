@@ -1,0 +1,19 @@
+<div class="fab">
+    <button class="main">
+      <i class="fa-solid fa-filter"></i>
+    </button>
+    <ul>
+      <li>
+        <label for="opcao1">Opção 1</label>
+        <button id="opcao1" (click)="onPertoClick()">
+          <i class="fa-solid fa-street-view"></i>
+        </button>
+      </li>
+      <li>
+        <label for="opcao2">Opção 2</label>
+        <button id="opcao2" (click)="onMelhorAvaliadasClick()" disabled style="background-color: grey;">
+          <i class="fa-solid fa-ranking-star"></i>
+        </button>
+      </li>
+    </ul>
+  </div>

@@ -4,6 +4,7 @@ import { LoadingComponent } from './loading/loading.component';
 import { ModalAlertaComponent } from './modal-alerta/modal-alerta.component';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import { ModalSucessoComponent } from './modal-sucesso/modal-sucesso.component';
+import { FabButtonComponent } from './fab-button/fab-button.component';
 
 
 
@@ -11,7 +12,8 @@ import { ModalSucessoComponent } from './modal-sucesso/modal-sucesso.component';
   declarations: [
     LoadingComponent,
     ModalAlertaComponent,
-    ModalSucessoComponent
+    ModalSucessoComponent,
+    FabButtonComponent
   ],
   imports: [
     CommonModule,
@@ -19,7 +21,8 @@ import { ModalSucessoComponent } from './modal-sucesso/modal-sucesso.component';
   ], 
   exports: [
     LoadingComponent,
-    ModalAlertaComponent
+    ModalAlertaComponent,
+    FabButtonComponent
   ]
 })
 export class SharedModule { }

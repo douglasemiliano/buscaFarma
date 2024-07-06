@@ -1,4 +1,4 @@
-import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { AppService } from 'src/app/services/app.service';
 import { Subscription } from 'rxjs';
 import { GeoService } from 'src/app/services/geo.service';
@@ -22,6 +22,9 @@ export class ResultadoComponent implements AfterViewInit, OnInit, OnDestroy {
   farmacias: any[];
   contadorFarmacias: number = 0;
   posicaoUsuario: number[]
+
+  fabOpcao1: boolean;
+  @Input() receberFab1: any;  
   @ViewChild(MapaComponent) mapaComponent: MapaComponent;
 
   private farmaciasSubscription: Subscription;
@@ -43,12 +46,28 @@ export class ResultadoComponent implements AfterViewInit, OnInit, OnDestroy {
       this.mapaComponent.updateSize();
       this.carregarMapa();
       this.getCurrentLocation();
+
+
     }
+  }
+
+
+  reberEventoMelhorAvaliadasClick(){
+    console.log("melhor avaliadas");
+    
+  }
+
+  ordenarPorDistancia(){
+    for (let farmacia of this.farmacias) {
+      farmacia.distance = this.calculateDistance(farmacia.coordenadaGeo.coordinates[0], farmacia.coordenadaGeo.coordinates[1])
+    }
+    this.farmacias.sort((a, b) => a.distance - b.distance);
+
   }
 
   ngOnInit(): void {
     this.farmaciasSubscription = this.farmaciaService.farmacias.subscribe((data: any) => {
-      this.farmacias = data;
+      this.farmacias = data;      
       if(this.mapaComponent){
         this.long = data[0].coordenadaGeo.coordinates[0];
         this.lat = data[0].coordenadaGeo.coordinates[1];
@@ -109,5 +128,6 @@ export class ResultadoComponent implements AfterViewInit, OnInit, OnDestroy {
   private deg2rad(deg: number): number {
     return deg * (Math.PI / 180);
   }
+  
 
 }

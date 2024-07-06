@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { Farmacia } from '../models/farmacia';
 import { Router } from '@angular/router';
 import { environment } from 'src/environments/environment';
@@ -23,10 +23,9 @@ export class FarmaciaService {
   localizacaoUsuario: BehaviorSubject<number[]> = new BehaviorSubject<number[]> ([]);
 
   localizacao: number[];
+  
   constructor(private http: HttpClient, private router: Router, private modalService: ModalService) { }
   
-
-
   public buscarFarmacia(bairro: string = "", municipio: string = "", UF: string) {
     this.http.get<Farmacia[]>(`${this.url}/farmacias/busca?bairro=${bairro}&municipio=${municipio}&estado=${UF}`).subscribe({
       next: (farmacias: Farmacia[]) => {
@@ -94,5 +93,13 @@ export class FarmaciaService {
   
   getAvaliacao(idFarmacia: string) {
     return this.http.get(this.url + "/avaliacao/" + idFarmacia);
+  }
+
+  buscarMunicipiosPorUF(UF: string):Observable<any> {
+    return this.http.get(this.url + "/enderecos/municipios/" + UF)
+  }
+
+  buscarBairroPorUFeMunicipio(UF: string, municipio: string): Observable<any> {
+    return this.http.get(this.url + "/enderecos/bairros/" + UF + "/" + municipio);
   }
 }

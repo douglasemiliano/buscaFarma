@@ -37,6 +37,7 @@ import { StarRatingModule } from 'angular-star-rating';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { HttpConfigInterceptorService } from './services/http-config-interceptor.service';
 import { SharedModule } from './shared/shared.module';
+import { NgSelectModule } from '@ng-select/ng-select';
 
 @NgModule({
   declarations: [
@@ -75,7 +76,8 @@ import { SharedModule } from './shared/shared.module';
     MatAutocompleteModule,
     MatChipsModule,
     SharedModule,
-    StarRatingModule.forRoot() 
+    StarRatingModule.forRoot(),
+    NgSelectModule
    ],
   providers: [
     AppService,
