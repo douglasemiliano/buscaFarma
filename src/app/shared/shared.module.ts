@@ -5,6 +5,9 @@ import { ModalAlertaComponent } from './modal-alerta/modal-alerta.component';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import { ModalSucessoComponent } from './modal-sucesso/modal-sucesso.component';
 import { FabButtonComponent } from './fab-button/fab-button.component';
+import {OverlayModule} from '@angular/cdk/overlay';
+import {MatButtonModule} from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
 
 
 
@@ -17,7 +20,10 @@ import { FabButtonComponent } from './fab-button/fab-button.component';
   ],
   imports: [
     CommonModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    OverlayModule,
+    MatButtonModule,
+    MatIconModule
   ], 
   exports: [
     LoadingComponent,
