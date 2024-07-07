@@ -77,9 +77,7 @@ export class MapaComponent {
       if (markers && markers.length > 0) {
         markers.forEach((marker: any) => {
           const pinFeature = new Feature({
-            name: marker.nomeFantasia,
-            coordenadas: marker.coordenadaGeo.coordinates,
-            endereco: marker.endereco,
+            farmacia: marker,
             type: Point,
             geometry: new Point(fromLonLat(marker.coordenadaGeo.coordinates))
           });
@@ -94,11 +92,7 @@ export class MapaComponent {
           let features: any[] = this.map.getFeaturesAtPixel(e.pixel);
   
           if (features.length > 0){
-            let dadosFarmacia: any = {
-              nome: features[0].values_.name, 
-              endereco: features[0].values_.endereco,
-              coordenadas: features[0].values_.coordenadas }
-            this.modalService.openDialog(dadosFarmacia,)
+            this.modalService.openDialog(features[0].values_.farmacia,)
           }
           
           
