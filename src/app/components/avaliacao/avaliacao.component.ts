@@ -100,10 +100,10 @@ export class AvaliacaoComponent implements OnInit {
     });
 
     this.informacoesForm = this.fb.group({
-      genero: new FormControl("", [Validators.required]),
-      dataNascimento: new FormControl("", [Validators.required]),
-      rg: new FormControl("", [Validators.required]),
-      anonimo: new FormControl("", Validators.required)
+      genero: new FormControl(""),
+      dataNascimento: new FormControl(""),
+      rg: new FormControl(""),
+      anonimo: new FormControl("")
     })
   }
 
