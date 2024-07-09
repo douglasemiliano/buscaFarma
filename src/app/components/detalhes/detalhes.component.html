@@ -35,7 +35,7 @@
           
           
           <div class="botao-goTo">
-            <button mat-fab color="warn" (click)="goToMaps(farmacia.longLat)" title="Navegar">
+            <button mat-fab color="warn" (click)="goToMaps(farmacia.coordenadaGeo.coordinates)" title="Navegar">
                 <i class="fas fa-arrow-right fa-2x"></i>
             </button>
           </div>
@@ -57,7 +57,10 @@
           </span>
         </div>
       <!-- Empty state -->
-      <p *ngIf="!this.avaliacao || this.avaliacao.produtos.length === 0">Nenhum produto disponível.</p>
+    </div>
+    <div class="container d-flex align-items-center justify-content-center flex-column" *ngIf="!this.avaliacao || this.avaliacao.produtos.length === 0">
+      <img src="https://cdn-icons-png.flaticon.com/512/5898/5898209.png" alt="" style="width: 8rem; opacity: 0.5;">
+      Nenhum produto disponível.
       </div>
     </mat-tab>
     <mat-tab label="Avaliações">
