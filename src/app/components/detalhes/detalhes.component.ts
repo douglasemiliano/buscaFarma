@@ -54,7 +54,7 @@ export class DetalhesComponent implements OnInit, OnDestroy, AfterViewInit{
   rating: number = 0;
   public teste: number = 0;
 
-  avaliacao: AvaliacaoResponseDTO;
+  avaliacao: AvaliacaoResponseDTO | any;
   
   @ViewChild(MapaDetalheComponent) mapaComponent: MapaDetalheComponent;
 
@@ -167,6 +167,8 @@ export class DetalhesComponent implements OnInit, OnDestroy, AfterViewInit{
     this.farmaciaService.getAvaliacao(farmaciaId).subscribe({
       next: (avaliacao: AvaliacaoResponseDTO | any) => {
         this.avaliacao = avaliacao;
+      }, error: (error: any) => {
+        this.avaliacao = null;
       }
     });
   }

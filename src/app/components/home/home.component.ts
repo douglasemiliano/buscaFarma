@@ -75,10 +75,15 @@ export class HomeComponent implements OnInit {
     this.farmaciaService.buscarBairroPorUFeMunicipio(this.estado.value, municipio).subscribe({
       next: (data => {
         this.bairros = data;
-      })
+      this.ordenarOrdemAlfabetica(this.bairros)      
     })
+  })
 
     
+  }
+
+  public ordenarOrdemAlfabetica(lista: string[]) {
+    lista.sort((a, b) => a.localeCompare(b, undefined, { sensitivity: 'base' }));
   }
 
   onSubmit() {
@@ -132,6 +137,7 @@ export class HomeComponent implements OnInit {
     this.farmaciaService.buscarMunicipiosPorUF(this.estado.value.toUpperCase()).subscribe({
       next: (data => {
         this.municipios = data;
+        this.ordenarOrdemAlfabetica(this.municipios);
         this.iniciarFiltro();
       })
     })
@@ -151,7 +157,6 @@ export class HomeComponent implements OnInit {
 
   private _filter(value: string): string[] {
     const filterValue = value.toLowerCase();
-
     return this.municipios.filter(municipio => municipio.toLowerCase().includes(filterValue));
   }
 
