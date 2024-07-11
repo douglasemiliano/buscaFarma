@@ -65,7 +65,22 @@ export class AvaliacaoComponent implements OnInit {
     { name: 'Noretisterona 0,35mg', indication: 'Contracepção' },
     { name: 'Valerato de Estradiol 5mg + Enantato de Noretisterona 50mg', indication: 'Contracepção' },
     { name: 'Alendronato de Sódio 70mg', indication: 'Osteoporose' },
-    { name: 'Absorvente', indication: 'Dignidade Menstrual' }
+    { name: 'Absorvente Higiênico', indication: 'Dignidade Menstrual' },
+    { name:  'sinvastatina 10mg', indication: 'Dislipidemia'},
+    { name:  'sinvastatina 20mg', indication: 'Dislipidemia'},
+    { name:  'sinvastatina 40mg', indication: 'Dislipidemia'},
+    { name: 'carbidopa 25mg + levodopa 250mg', indication: 'Doença de Parkinson'},
+    { name: 'cloridrato de benserazida 25mg + levodopa 100mg', indication: 'Doença de Parkinson'},
+    { name: 'maleato de timolol 2,5mg', indication: 'Glaucoma'},
+    { name: 'maleato de timolol 5mg', indication: 'Glaucoma'},
+    { name: 'budesonida 32mcg', indication: 'Rinite' },
+    { name: 'budesonida 50mcg', indication: 'Rinite' },
+    { name: 'dipropionato de beclometasona 50mcg/dose', indication: 'Rinite' },
+    { name: 'dapagliflozina 10 mg', indication: 'DIABETES MELLITUS + DOENÇA CARDIOVASCULAR', modalidade: "COPAGAMENTO" },
+    { name: 'Fralda Geriátrica', indication: 'Incontinência', modalidade: "COPAGAMENTO" },
+
+
+
   ];
   
   selectedMedications: any[] = [];
